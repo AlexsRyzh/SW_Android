@@ -11,15 +11,15 @@ import java.lang.reflect.Modifier
 
 @Composable
 fun MainViev(){
-    nav(name = "Задачи")
+    Nav(name = "Задачи")
 }
 
 @Composable
-fun nav(name: String){
+fun Nav(name: String){
     Row {
        Button(
            onClick = { /*TODO*/ },
-           ) {
+            ) {
            
        }
         Column() {
