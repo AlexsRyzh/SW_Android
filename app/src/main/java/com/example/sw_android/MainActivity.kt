@@ -19,28 +19,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MessageCard(Message("Android", "Jetpack Compose"))
+            MainViev()
         }
     }
 }
 
-
-data class Message(val author: String, val body: String)
-
-@Composable
-fun MessageCard(msg: Message){
-    Column() {
-        for (i in 1..10){
-            Text("This number = $i")
-        }
-    }
-
-}
-
-@Preview
-@Composable
-fun PreviewMessageCard(){
-    MessageCard(
-        msg = Message("Colleague", "Hey, take a look at Jetpack Compose, it's great!")
-    )
-}
