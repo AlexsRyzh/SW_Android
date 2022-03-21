@@ -41,13 +41,13 @@ fun Nav(name: String) {
             .padding(20.dp)
     ) {
         Button(
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Unspecified),
             onClick = { /*TODO*/ },
         ) {
 
         }
 
-        Column() {
+        Column {
             Text(
                 text = name,
                 textAlign = TextAlign.Center
