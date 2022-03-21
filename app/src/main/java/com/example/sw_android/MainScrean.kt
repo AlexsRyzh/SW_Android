@@ -17,13 +17,12 @@ fun MainViev(){
 @Composable
 fun nav(name: String){
     Row {
-       Button(onClick = { /*TODO*/ },
-       modifier = Modifier
-           .background(Color.White)) {
+       Button(
+           onClick = { /*TODO*/ },
+           ) {
            
        }
-        Column(modifier = Modifier
-            .) {
+        Column() {
             Text(text = name)
             Text(text = "Моё пространство")
         }
