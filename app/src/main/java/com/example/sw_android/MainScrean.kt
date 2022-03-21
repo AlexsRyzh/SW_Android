@@ -38,9 +38,7 @@ fun Nav(name: String) {
 
         }
 
-        Column(
-
-        ) {
+        Column() {
             Text(
                 text = name,
                 textAlign = TextAlign.Center
