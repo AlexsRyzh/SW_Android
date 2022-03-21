@@ -19,7 +19,7 @@ fun nav(name: String){
     Row {
        Button(onClick = { /*TODO*/ },
        modifier = Modifier
-           .background(Color())) {
+           .background(Color.White)) {
            
        }
         Column(modifier = Modifier
