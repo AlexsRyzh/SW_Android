@@ -5,11 +5,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
@@ -17,17 +15,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 @Composable
 fun MainViev() {
-    Row(
+    Column(
         modifier = Modifier
             .background(Color.LightGray)
             .fillMaxHeight()
             .fillMaxWidth()
-    ){
-        Nav(name = "Задачи")
+    ) {
+        Nav(name = "Задачи ")
+        Nav2()
     }
 
 }
@@ -38,23 +38,31 @@ fun Nav(name: String) {
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
-            .padding(20.dp)
+            .padding(
+                start = 25.dp,
+                top = 20.dp,
+                end = 25.dp,
+                bottom = 10.dp
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Button(
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Unspecified),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick = { /*TODO*/ },
         ) {
 
         }
 
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = name,
-                textAlign = TextAlign.Center
+                fontSize = 20.sp
             )
             Text(
                 text = "Моё пространство",
-                textAlign = TextAlign.Center
+                fontSize = 14.sp
             )
         }
         Button(
@@ -66,8 +74,56 @@ fun Nav(name: String) {
     }
 }
 
-@Preview
+@Composable
+fun Nav2() {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(
+                start = 20.dp,
+                top = 10.dp,
+                end = 20.dp,
+                bottom = 10.dp
+            )
+    ) {
+        TextButton(
+            onClick = { /*TODO*/ }
+        ) {
+            Text(
+                text = "Cписок",
+                color = Color.Black
+            )
+        }
+        TextButton(
+            onClick = { /*TODO*/ }
+        ) {
+            Text(
+                text = "Доска",
+                color = Color.Black
+            )
+        }
+        TextButton(
+            onClick = { /*TODO*/ }
+        ) {
+            Text(
+                text = "Календарь",
+                color = Color.Black
+            )
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
 @Composable
 fun PrewivNav() {
     Nav("Android")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrewivNav2() {
+    Nav2()
 }
