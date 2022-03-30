@@ -25,13 +25,12 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun MainViev() {
-        Nav(name = "Задачи")
+fun MainScrean() {
 }
 
 
 @Composable
-fun Nav(name: String) {
+fun Nav1(name: String) {
     Column(modifier = Modifier.background(Color.Gray)) {
         Row(
             modifier = Modifier
@@ -135,12 +134,4 @@ fun Nav(name: String) {
         }
 
     }
-}
-
-
-
-@Preview
-@Composable
-fun PrewivNav() {
-    Nav("Задачи")
 }
