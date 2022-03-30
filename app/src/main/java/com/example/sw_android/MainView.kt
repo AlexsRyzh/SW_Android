@@ -80,7 +80,7 @@ fun Nav(){
         Column(modifier = Modifier
             .background(Color(red = 0xDF, green = 0xDC, blue = 0xDC, alpha = 0xFF))
             .fillMaxWidth()
-            .fillMaxHeight(0.92f)
+            .fillMaxHeight(0.926f)
             .padding(start = 10.dp, end = 10.dp, top = 35.dp, bottom = 35.dp),
             ) {
 
@@ -155,90 +155,88 @@ fun NavBot(){
         horizontalArrangement = Arrangement.SpaceBetween
     )
     {
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-        elevation = ButtonDefaults.elevation(0.dp)) {
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            elevation = ButtonDefaults.elevation(0.dp),
+            contentPadding = PaddingValues(horizontal = 0.dp)
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally)
             {
                 Image(
                     painter = painterResource(id = R.drawable.chek),
                     contentDescription = "chek",
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(18.dp))
                 Text(text = "Задачи",
-                    fontSize = 10.sp)
+                    fontSize = 12.sp)
             }
 
         }
 
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)) {
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            elevation = ButtonDefaults.elevation(0.dp),
+            contentPadding = PaddingValues(horizontal = 0.dp)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally)
             {
                 Image(
                     painter = painterResource(id = R.drawable.chat),
                     contentDescription = "chat",
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(18.dp))
                 Text(text = "Чат",
-                    fontSize = 10.sp)
+                    fontSize = 12.sp)
             }
 
         }
 
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)) {
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            elevation = ButtonDefaults.elevation(0.dp),
+            contentPadding = PaddingValues(horizontal = 0.dp)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally)
             {
                 Image(
                     painter = painterResource(id = R.drawable.stat  ),
                     contentDescription = "stat",
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(18.dp))
                 Text(text = "Статистика",
-                    fontSize = 10.sp)
+                    fontSize = 12.sp)
             }
 
         }
 
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)) {
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            elevation = ButtonDefaults.elevation(0.dp),
+            contentPadding = PaddingValues(horizontal = 0.dp)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally)
             {
                 Image(
                     painter = painterResource(id = R.drawable.lupa),
                     contentDescription = "lupa",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(18.dp))
                 Text(text = "Поиск",
-                    fontSize = 10.sp)
+                    fontSize = 12.sp)
             }
 
         }
 
         Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)) {
+            elevation = ButtonDefaults.elevation(0.dp),contentPadding = PaddingValues(horizontal = 0.dp)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally)
             {
                 Image(
                     painter = painterResource(id = R.drawable.menu),
                     contentDescription = "menu",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(18.dp))
                 Text(text = "Меню",
-                    fontSize = 10.sp)
+                    fontSize = 12.sp)
             }
 
         }
-
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.chek),
-                    contentDescription = "chek",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                    modifier = Modifier.size(20.dp))
-                Text(text = "Задачи",
-                    fontSize = 10.sp)
-            }
-
-        }
-
 
     }
 }
