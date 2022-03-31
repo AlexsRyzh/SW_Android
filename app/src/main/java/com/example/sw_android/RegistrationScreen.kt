@@ -3,6 +3,8 @@ package com.example.sw_android
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -11,11 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.util.*
 
 @Composable
 fun RegistrationSrean(){
@@ -24,9 +24,9 @@ fun RegistrationSrean(){
             .fillMaxSize()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.main_registration),
+            painter = painterResource(id = R.drawable.main_reg),
             contentDescription = "Главная картинка",
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.FillHeight,
             modifier = Modifier
                 .fillMaxSize()
         )
@@ -36,33 +36,39 @@ fun RegistrationSrean(){
             modifier = Modifier
                 .width(400.dp)
                 .fillMaxHeight()
+                .width(300.dp)
         ) {
             Text(
                 text = "Space",
+                color = Color(0xFF2E2084),
                 fontSize = 60.sp,
                 modifier = Modifier
                     .fillMaxWidth()
             )
             Text(
                 text = "Work",
+                color = Color(0xFF2E2084),
                 fontSize = 60.sp
             )
             Image(painter = painterResource(id = R.drawable.logotype), contentDescription = "Иконка входа")
-            Button_registrr(nameButton = "регистрация через email",Color(0xFF3C90DE), R.drawable.icon_registration)
-            Button_registrr(nameButton = "вход через email",Color(0xFFE53F1B), R.drawable.sing_in)
+            Button_registr(nameButton = "регистрация через email",Color(0xFF3C90DE),
+                R.drawable.icon_registration
+            )
+            Button_registr(nameButton = "вход через email",Color(0xFFE53F1B), R.drawable.sing_in)
         }
     }
 }
 
 @Composable
-fun Button_registrr(nameButton: String, color: Color, idImage: Int){
+fun Button_registr(nameButton: String, color: Color, idImage: Int){
     TextButton(
         onClick = { /*TODO*/ },
+        colors = ButtonDefaults.textButtonColors(backgroundColor = color),
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(
-                bottom = 20.dp,
+                bottom = 13.dp,
             )
-            .background(color)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -73,19 +79,21 @@ fun Button_registrr(nameButton: String, color: Color, idImage: Int){
                     end = 10.dp,
                     bottom = 5.dp
                 )
+                .width(260.dp)
         ) {
             Image(
                 painter = painterResource(id = idImage),
                 contentDescription = nameButton,
                 modifier = Modifier
                     .padding(
-                        end = 10.dp,
+                        end = 14.dp,
                     )
+                    .size(24.dp)
             )
 
             Text(
-                text = nameButton.uppercase(Locale.getDefault()),
-                fontSize = 18.sp,
+                text = nameButton.uppercase(),
+                fontSize = 14.sp,
                 color = Color.White
             )
         }
