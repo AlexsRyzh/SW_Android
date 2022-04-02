@@ -1,5 +1,7 @@
 package com.example.sw_android
 
+import android.graphics.Paint
+import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,18 +10,24 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import com.example.sw_android.ui.theme.RobotoFontFamily
 
 @Composable
-fun RegistrationSrean(){
+fun RegistrationSrean() {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -31,38 +39,81 @@ fun RegistrationSrean(){
                 .fillMaxSize()
         )
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .width(400.dp)
+                .widthIn(max = 400.dp)
                 .fillMaxHeight()
-                .width(300.dp)
         ) {
-            Text(
-                text = "Space",
-                color = Color(0xFF2E2084),
-                fontSize = 60.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            Text(
-                text = "Work",
-                color = Color(0xFF2E2084),
-                fontSize = 60.sp
-            )
-            Image(painter = painterResource(id = R.drawable.logotype), contentDescription = "Иконка входа")
-            Button_registr(nameButton = "регистрация через email",Color(0xFF3C90DE),
-                R.drawable.icon_registration
-            )
-            Button_registr(nameButton = "вход через email",Color(0xFFE53F1B), R.drawable.sing_in)
+            Denimination()
+            Buttons()
         }
     }
 }
 
 @Composable
-fun Button_registr(nameButton: String, color: Color, idImage: Int){
+private fun Denimination(){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxHeight(0.7f)
+            .fillMaxWidth()
+            .padding(top = 200.dp)
+    ) {
+        Text(
+            text = "Space",
+            color = Color(0xFF3723AF),
+            fontFamily = RobotoFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 70.sp,
+        )
+        Text(
+            text = "Work",
+            fontFamily = RobotoFontFamily,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF3723AF),
+            fontSize = 70.sp,
+        )
+    }
+
+}
+
+@Composable
+private fun Buttons(){
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(
+                bottom = 60.dp
+            )
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
+        Button_registr(
+            nameButton = "регистрация через email",
+            Color(0xFF3C90DE),
+            R.drawable.icon_registration,
+            {}
+        )
+        Button_registr(
+            nameButton = "вход через email",
+            Color(0xFFE53F1B),
+            R.drawable.sing_in,
+            {}
+        )
+    }
+
+}
+
+@Composable
+private fun Button_registr(
+    nameButton: String,
+    color: Color,
+    idImage: Int,
+    action: () -> Unit
+) {
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = { action },
         colors = ButtonDefaults.textButtonColors(backgroundColor = color),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
@@ -101,8 +152,8 @@ fun Button_registr(nameButton: String, color: Color, idImage: Int){
 }
 
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 800)
+@Preview(showBackground = true, widthDp = 800, heightDp = 1000)
 @Composable
-fun PreviewRefistration(){
+fun PreviewRefistration() {
     RegistrationSrean()
 }

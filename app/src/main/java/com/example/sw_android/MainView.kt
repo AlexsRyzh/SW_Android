@@ -246,7 +246,7 @@ fun NavBot(){
 @Composable
 fun PrewivNavTop() {
     Column {
-        NavTop("ООО.ЭнергоСтрой")
+        NavTop("ООО.Энерго  Строй")
         Nav()
         NavBot()
     }
