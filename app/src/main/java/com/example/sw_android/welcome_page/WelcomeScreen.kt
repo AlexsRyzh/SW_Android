@@ -1,31 +1,28 @@
 package com.example.sw_android
 
-import android.graphics.Paint
-import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import com.example.sw_android.ui.theme.Blue100
+import com.example.sw_android.ui.theme.Blue200
+import com.example.sw_android.ui.theme.Red200
 import com.example.sw_android.ui.theme.RobotoFontFamily
 
 @Composable
-fun RegistrationSrean() {
+fun WelcomeScrean() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -61,7 +58,7 @@ private fun Denimination(){
     ) {
         Text(
             text = "Space",
-            color = Color(0xFF3723AF),
+            color = Blue200,
             fontFamily = RobotoFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 70.sp,
@@ -70,7 +67,7 @@ private fun Denimination(){
             text = "Work",
             fontFamily = RobotoFontFamily,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF3723AF),
+            color = Blue200,
             fontSize = 70.sp,
         )
     }
@@ -91,13 +88,13 @@ private fun Buttons(){
     ) {
         Button_registr(
             nameButton = "регистрация через email",
-            Color(0xFF3C90DE),
+            Blue100,
             R.drawable.icon_registration,
             {}
         )
         Button_registr(
             nameButton = "вход через email",
-            Color(0xFFE53F1B),
+            Red200,
             R.drawable.sing_in,
             {}
         )
@@ -152,8 +149,8 @@ private fun Button_registr(
 }
 
 
-@Preview(showBackground = true, widthDp = 800, heightDp = 1000)
+@Preview(showBackground = true, widthDp = 480, heightDp = 1000)
 @Composable
-fun PreviewRefistration() {
-    RegistrationSrean()
+fun PreviewBaseScreen() {
+    WelcomeScrean()
 }
