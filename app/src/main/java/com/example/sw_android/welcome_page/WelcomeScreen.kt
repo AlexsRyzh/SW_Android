@@ -16,13 +16,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.ui.theme.Blue100
 import com.example.sw_android.ui.theme.Blue200
 import com.example.sw_android.ui.theme.Red200
 import com.example.sw_android.ui.theme.RobotoFontFamily
 
 @Composable
-fun WelcomeScrean() {
+fun WelcomeScrean(
+    navControler: NavHostController
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -41,7 +45,7 @@ fun WelcomeScrean() {
                 .fillMaxHeight()
         ) {
             Denimination()
-            Buttons()
+            Buttons(navControler = navControler)
         }
     }
 }
@@ -75,7 +79,9 @@ private fun Denimination(){
 }
 
 @Composable
-private fun Buttons(){
+private fun Buttons(
+    navControler: NavHostController
+){
     Column(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,7 +96,9 @@ private fun Buttons(){
             nameButton = "регистрация через email",
             Blue100,
             R.drawable.icon_registration,
-            {}
+            action = {
+                navControler.navigate(route = Screen.SingIn.route)
+            }
         )
         Button_registr(
             nameButton = "вход через email",
@@ -110,7 +118,7 @@ private fun Button_registr(
     action: () -> Unit
 ) {
     TextButton(
-        onClick = { action },
+        onClick = action,
         colors = ButtonDefaults.textButtonColors(backgroundColor = color),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
@@ -152,5 +160,5 @@ private fun Button_registr(
 @Preview(showBackground = true, widthDp = 480, heightDp = 1000)
 @Composable
 fun PreviewBaseScreen() {
-    WelcomeScrean()
+    WelcomeScrean(navControler = rememberNavController())
 }

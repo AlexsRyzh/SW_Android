@@ -3,14 +3,19 @@ package com.example.sw_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.sw_android.registration_page.FieldRegistration
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.singin_page.SingInScreen
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SingInScreen()
+            navController = rememberNavController()
+            SetupNavGraph(navController = navController)
         }
     }
 }
