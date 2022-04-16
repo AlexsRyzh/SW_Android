@@ -96,15 +96,15 @@ private fun Buttons(
             nameButton = "регистрация через email",
             Blue100,
             R.drawable.icon_registration,
-            action = {
-                navControler.navigate(route = Screen.SingIn.route)
-            }
+            action = { }
         )
         Button_registr(
             nameButton = "вход через email",
             Red200,
             R.drawable.sing_in,
-            {}
+            action = {
+                navControler.navigate(route = Screen.SingIn.route)
+            }
         )
     }
 
