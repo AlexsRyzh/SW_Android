@@ -1,12 +1,10 @@
 package com.example.sw_android.singin_page
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -16,11 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sw_android.ui.custom.CustomBottomBar
+import com.example.sw_android.ui.custom.CustomTextField
 import com.example.sw_android.ui.theme.RobotoFontFamily
 
 @Composable
@@ -52,7 +51,7 @@ fun SingInScreen(){
             ){
                 Text(
                     text = "Вход",
-                    fontSize = 48.sp,
+                    fontSize = 42.sp,
                     color = Color(0xff1A22ED),
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Bold,
@@ -172,64 +171,12 @@ fun SingInScreen(){
                 }
             }
         }
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 15.dp)
-        ) {
-            Text(
-                text = "Нет аккаунта?",
-                color = Color(0xff1A22ED),
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.width(30.dp))
-            Text(
-                text = "Зарегистрироваться",
-                color = Color(0xffDD0909),
-                fontSize = 14.sp
-            )
-        }
+        CustomBottomBar(
+            firstText = "Нет аккаунта?",
+            secondText = "Зарегистрироваться"
+        )
     }
 
-}
-
-@Composable
-fun CustomTextField(
-    modifier: Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: @Composable () -> Unit,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    leadingIcon: @Composable () -> Unit,
-    trailingIcon: @Composable () -> Unit,
-    ){
-    OutlinedTextField(
-        textStyle = TextStyle(
-            fontSize = 18.sp
-        ),
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        keyboardOptions = keyboardOptions,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color.White,
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            focusedLabelColor = Color(0xff1A22ED),
-            unfocusedLabelColor = Color(0xff1A22ED),
-            cursorColor = Color(0xff1A22ED),
-            trailingIconColor = Color.Black,
-            leadingIconColor = Color.Black
-        ),
-        singleLine = true,
-        modifier = modifier
-            .border(3.dp, Color(0xff1A22ED), RoundedCornerShape(18.dp))
-            .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(18.dp)),
-    )
 }
 
 
