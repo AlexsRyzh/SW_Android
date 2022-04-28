@@ -1,164 +1,113 @@
-package com.example.sw_android
+package com.example.sw_android.welcome_page
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.sw_android.ui.theme.Blue100
-import com.example.sw_android.ui.theme.Blue200
-import com.example.sw_android.ui.theme.Red200
-import com.example.sw_android.ui.theme.RobotoFontFamily
+import com.example.sw_android.ui.theme.custom.Logo
 
 @Composable
-fun WelcomeScrean(
-    navControler: NavHostController
-) {
-    Box(
-        contentAlignment = Alignment.Center,
+fun WelcomeScreen(){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFF142B6F))
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.main_reg),
-            contentDescription = "Главная картинка",
-            contentScale = ContentScale.FillHeight,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxSize()
-        )
-        Column(
-            modifier = Modifier
-                .widthIn(max = 400.dp)
-                .fillMaxHeight()
+                .weight(6f)
+                .fillMaxWidth()
         ) {
-            Denimination()
-            Buttons(navControler = navControler)
+            Logo(
+                logoSize = 130.dp
+            )
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .weight(4f)
+                .widthIn(max = 350.dp)
+                .padding(horizontal = 20.dp)
+        ) {
+            CustomBottom(
+                text = "регистрация через email",
+                icon = Icons.Rounded.Email
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            CustomBottom(
+                text = "Вход через email",
+                icon = Icons.Rounded.Email
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            CustomBottom(
+                text = "регистрация через email",
+                icon = Icons.Rounded.Email
+            )
         }
     }
 }
 
-@Composable
-private fun Denimination(){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxHeight(0.7f)
-            .fillMaxWidth()
-            .padding(top = 200.dp)
-    ) {
-        Text(
-            text = "Space",
-            color = Blue200,
-            fontFamily = RobotoFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 70.sp,
-        )
-        Text(
-            text = "Work",
-            fontFamily = RobotoFontFamily,
-            fontWeight = FontWeight.Bold,
-            color = Blue200,
-            fontSize = 70.sp,
-        )
-    }
-
-}
 
 @Composable
-private fun Buttons(
-    navControler: NavHostController
+private fun CustomBottom(
+    text: String,
+    icon: ImageVector,
+    backgroundColor: Color = Color(0xFFF5FAFA),
+    action: (() -> Unit)? = null
 ){
-    Column(
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(
-                bottom = 60.dp
-            )
-            .fillMaxHeight()
-            .fillMaxWidth()
-    ) {
-        Button_registr(
-            nameButton = "регистрация через email",
-            Blue100,
-            R.drawable.icon_registration,
-            action = { }
-        )
-        Button_registr(
-            nameButton = "вход через email",
-            Red200,
-            R.drawable.sing_in,
-            action = {
-                navControler.navigate(route = Screen.SingIn.route)
-            }
-        )
-    }
-
-}
-
-@Composable
-private fun Button_registr(
-    nameButton: String,
-    color: Color,
-    idImage: Int,
-    action: () -> Unit
-) {
     TextButton(
-        onClick = action,
-        colors = ButtonDefaults.textButtonColors(backgroundColor = color),
-        shape = RoundedCornerShape(8.dp),
+        onClick = action?:{},
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFF5FAFA)
+        ),
+        shape = RoundedCornerShape(10.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            top = 10.dp,
+            end = 20.dp,
+            bottom = 10.dp
+        ),
         modifier = Modifier
-            .padding(
-                bottom = 13.dp,
-            )
+            .fillMaxWidth()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
             modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    top = 5.dp,
-                    end = 10.dp,
-                    bottom = 5.dp
-                )
-                .width(260.dp)
+                .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = idImage),
-                contentDescription = nameButton,
-                modifier = Modifier
-                    .padding(
-                        end = 14.dp,
-                    )
-                    .size(24.dp)
+                imageVector = icon,
+                contentDescription = "Email",
+                colorFilter = ColorFilter.tint(Color(0xFF142B6F))
             )
-
+            Spacer(modifier = Modifier.width(15.dp))
             Text(
-                text = nameButton.uppercase(),
-                fontSize = 14.sp,
-                color = Color.White
+                text = text.uppercase(),
+                color = Color(0xFF142B6F)
             )
         }
     }
 }
 
-
-@Preview(showBackground = true, widthDp = 480, heightDp = 1000)
+@Preview(showSystemUi = true)
 @Composable
-fun PreviewBaseScreen() {
-    WelcomeScrean(navControler = rememberNavController())
+private fun PreviewWelcomeScreen(){
+    WelcomeScreen()
 }

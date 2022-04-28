@@ -5,7 +5,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.sw_android.singin_page.SingInScreen
 
 
 @Composable
@@ -19,12 +18,15 @@ fun SetupNavGraph(
         composable(
             route = Screen.Welcome.route
         ){
-            WelcomeScrean(navControler = navController)
+
         }
         composable(
             route = Screen.SingIn.route
         ){
-            SingInScreen()
+        }
+        composable(
+            route = Screen.Registration.route
+        ){
         }
     }
 }
