@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "407859763363",
+    "firebase_url": "https://spacework-5f5f3-default-rtdb.firebaseio.com",
+    "project_id": "spacework-5f5f3",
+    "storage_bucket": "spacework-5f5f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407859763363:android:4a8670e4be5d2e205e4716",
+        "android_client_info": {
+          "package_name": "com.example.sw_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407859763363-vtgvhfs2sufu51eqi9ocuj4gh92thine.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuZ8ED2H8V4Vbe2_-1HkV1pYjbkOPwStU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407859763363-vtgvhfs2sufu51eqi9ocuj4gh92thine.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
