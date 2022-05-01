@@ -1,28 +1,34 @@
 package com.example.sw_android.singin_page
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.sw_android.Screen
+import com.example.sw_android.registration_page.RegistrationFormEvent
+import com.example.sw_android.registration_page.RegistrationViewModel
 import com.example.sw_android.ui.theme.custom.CustomBottomBar
 import com.example.sw_android.ui.theme.custom.CustomTextField
 import com.example.sw_android.ui.theme.custom.Logo
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun SingInScreen(){
+fun SingInScreen(
+    UiState: SingInViewModel,
+    navController: NavController
+){
     var email by remember {
         mutableStateOf("")
     }
@@ -67,21 +73,22 @@ fun SingInScreen(){
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(
-                    text = email,
-                    onValueChange = {email = it},
-                    clearOnClick = {email = ""},
+                    text = UiState._uiState.email,
+                    onValueChange = {UiState.onEvent(RegistrationFormEvent.EmailChanged(it))},
+                    clearOnClick = {UiState.onEvent(RegistrationFormEvent.EmailChanged(""))},
                     label = "Email"
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(
-                    text = password,
-                    onValueChange = {password = it},
-                    clearOnClick = {password = ""},
+                    text = UiState._uiState.password,
+                    onValueChange = {UiState.onEvent(RegistrationFormEvent.PasswordChanged(it))},
+                    clearOnClick = {UiState.onEvent(RegistrationFormEvent.PasswordChanged(""))},
                     label = "Пароль"
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+                Text(text = UiState.SingInSuccessful)
                 TextButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { UiState.singInAccount() },
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xff142B6F),
@@ -102,7 +109,8 @@ fun SingInScreen(){
             }
             CustomBottomBar(
                 usualText = "Нет аккаунта?",
-                clickText = "Зарегистрироваться"
+                clickText = "Зарегистрироваться",
+                event = { navController.navigate(Screen.Registration.route)}
             )
         }
     }
@@ -114,5 +122,8 @@ fun SingInScreen(){
 @Preview(showSystemUi = true)
 @Composable
 private fun PreviewSingInScreen(){
-    SingInScreen()
+    SingInScreen(
+        UiState = SingInViewModel(Firebase.auth),
+        navController = rememberNavController()
+    )
 }

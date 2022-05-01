@@ -17,10 +17,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.sw_android.Screen
 import com.example.sw_android.ui.theme.custom.Logo
 
 @Composable
-fun WelcomeScreen(){
+fun WelcomeScreen(
+    navController: NavController
+){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -47,12 +52,14 @@ fun WelcomeScreen(){
         ) {
             CustomBottom(
                 text = "регистрация через email",
-                icon = Icons.Rounded.Email
+                icon = Icons.Rounded.Email,
+                action = { navController.navigate(Screen.Registration.route )}
             )
             Spacer(modifier = Modifier.height(15.dp))
             CustomBottom(
                 text = "Вход через email",
-                icon = Icons.Rounded.Email
+                icon = Icons.Rounded.Email,
+                action = { navController.navigate(Screen.SingIn.route )}
             )
             Spacer(modifier = Modifier.height(15.dp))
             CustomBottom(
@@ -109,5 +116,5 @@ private fun CustomBottom(
 @Preview(showSystemUi = true)
 @Composable
 private fun PreviewWelcomeScreen(){
-    WelcomeScreen()
+    WelcomeScreen(navController = rememberNavController())
 }

@@ -1,8 +1,11 @@
 package com.example.sw_android.registration_page
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -15,27 +18,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.sw_android.Screen
 import com.example.sw_android.ui.theme.custom.CustomBottomBar
 import com.example.sw_android.ui.theme.custom.CustomTextField
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun RegistrationScreen(){
-    var name by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
-    var passwordAgain by remember {
-        mutableStateOf("")
-    }
-    var surName by remember {
-        mutableStateOf("")
-    }
-    var email by remember {
-        mutableStateOf("")
-    }
+fun RegistrationScreen(
+    UiState: RegistrationViewModel,
+    navController: NavController
+){
+    val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -70,37 +67,45 @@ fun RegistrationScreen(){
             Column(
                 modifier = Modifier
                     .weight(1f)
+                    .verticalScroll(scrollState)
             ) {
                 CustomTextField(
-                    text = name,
-                    onValueChange = { name = it},
-                    clearOnClick = { name = "" },
-                    label = "Имя"
+                    text = UiState.state.name,
+                    onValueChange = { UiState.onEvent(RegistrationFormEvent.NameChanged(it)) },
+                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.NameChanged("")) },
+                    label = "Имя",
+                    errorMessages = UiState.state.nameError
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(
-                    text = surName,
-                    onValueChange = { surName = it},
-                    clearOnClick = { surName = "" },
-                    label = "Фамилия"
+                    text = UiState.state.email,
+                    onValueChange = { UiState.onEvent(RegistrationFormEvent.EmailChanged(it)) },
+                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.EmailChanged("")) },
+                    label = "Email",
+                    errorMessages = UiState.state.emailError
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(
-                    text = password,
-                    onValueChange = { password = it},
-                    clearOnClick = { password = "" },
-                    label = "Пароль"
+                    text = UiState.state.password,
+                    onValueChange = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(it))},
+                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(""))},
+                    label = "Пароль",
+                    errorMessages = UiState.state.passwordError
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(
-                    text = passwordAgain,
-                    onValueChange = { passwordAgain = it},
-                    clearOnClick = { passwordAgain = "" },
-                    label = "Повторите пароль"
+                    text = UiState.state.repeatedPassword,
+                    onValueChange = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged(it))},
+                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged("")) },
+                    label = "Повторите пароль",
+                    errorMessages = UiState.state.repeatedPasswordError
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+                if (UiState.RegSuccessful != ""){
+                    Text(text = UiState.RegSuccessful)
+                }
                 TextButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { UiState.checkState() },
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xff142B6F),
@@ -119,7 +124,11 @@ fun RegistrationScreen(){
                     }
                 }
             }
-            CustomBottomBar(usualText = "Есть аккаунт?", clickText = "Войти")
+            CustomBottomBar(
+                usualText = "Есть аккаунт?",
+                clickText = "Войти",
+                event = {navController.navigate(Screen.SingIn.route)}
+            )
         }
     }
 }
@@ -127,5 +136,8 @@ fun RegistrationScreen(){
 @Preview(showSystemUi = true)
 @Composable
 private fun RegistrationScreenPreview(){
-    RegistrationScreen()
+    RegistrationScreen(
+        UiState = RegistrationViewModel(Firebase.auth),
+        navController = rememberNavController()
+    )
 }

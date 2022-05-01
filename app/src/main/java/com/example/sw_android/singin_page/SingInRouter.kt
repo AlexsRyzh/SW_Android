@@ -7,5 +7,4 @@ import androidx.compose.runtime.Composable
 fun SingInRouter(
     singInViewModel: SingInViewModel
 ){
-    SingInScreen()
 }

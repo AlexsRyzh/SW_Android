@@ -1,6 +1,7 @@
 package com.example.sw_android.ui.theme.custom
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +28,8 @@ fun CustomTextField(
     onValueChange: (String) -> Unit,
     clearOnClick: ()->Unit,
     label: String,
-    standText: String = "alexsandr.ryzhkov0232@mail.ru"
+    standText: String = "alexsandr.ryzhkov0232@mail.ru",
+    errorMessages: String? = null
 ){
     Card(
         shape = RoundedCornerShape(18.dp),
@@ -67,9 +69,17 @@ fun CustomTextField(
                     if (text==""){
                         Text(
                             text = standText,
-                            fontSize = 14.sp
+                            fontSize = 14.sp,
+                            color = Color(0xff828282)
                         )
                     }
+                }
+                if (errorMessages != null){
+                    Text(
+                        text = errorMessages,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
                 }
 
 
