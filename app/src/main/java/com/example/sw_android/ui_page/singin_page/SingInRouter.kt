@@ -1,4 +1,4 @@
-package com.example.sw_android.singin_page
+package com.example.sw_android.ui_page.singin_page
 
 import androidx.compose.runtime.Composable
 

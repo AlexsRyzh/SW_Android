@@ -1,4 +1,4 @@
-package com.example.sw_android.registration_page.errors
+package com.example.sw_android.ui_page.registration_page.errors
 
 class ValidatePassword {
     fun check(password: String): ValidationResult{

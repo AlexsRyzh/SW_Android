@@ -1,4 +1,4 @@
-package com.example.sw_android.registration_page
+package com.example.sw_android.ui_page.registration_page
 
 sealed class RegistrationFormEvent {
     data class NameChanged(val name: String): RegistrationFormEvent()

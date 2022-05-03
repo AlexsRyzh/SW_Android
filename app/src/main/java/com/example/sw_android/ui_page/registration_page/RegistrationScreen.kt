@@ -1,14 +1,11 @@
-package com.example.sw_android.registration_page
+package com.example.sw_android.ui_page.registration_page
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.Screen
 import com.example.sw_android.ui.theme.custom.CustomBottomBar
 import com.example.sw_android.ui.theme.custom.CustomTextField
+import com.example.sw_android.ui_page.singin_page.SingInFormEvent
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -100,12 +98,20 @@ fun RegistrationScreen(
                     label = "Повторите пароль",
                     errorMessages = UiState.state.repeatedPasswordError
                 )
-                Spacer(modifier = Modifier.height(20.dp))
-                if (UiState.RegSuccessful != ""){
-                    Text(text = UiState.RegSuccessful)
+                Spacer(modifier = Modifier.height(15.dp))
+                acceptedTermBar(UiState = UiState)
+                Spacer(modifier = Modifier.height(15.dp))
+                if (UiState.regSuccessful != ""){
+                    Text(
+                        text = UiState.regSuccessful,
+                        color = Color.Red
+                    )
                 }
                 TextButton(
-                    onClick = { UiState.checkState() },
+                    onClick = {
+                        if (UiState.checkState()){
+                            navController.navigate(Screen.MainScreen.route)
+                        } },
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xff142B6F),
@@ -133,11 +139,27 @@ fun RegistrationScreen(
     }
 }
 
-@Preview(showSystemUi = true)
 @Composable
-private fun RegistrationScreenPreview(){
-    RegistrationScreen(
-        UiState = RegistrationViewModel(Firebase.auth),
-        navController = rememberNavController()
-    )
+fun acceptedTermBar(
+    UiState: RegistrationViewModel
+){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        Checkbox(
+            checked = UiState.state.acceptedTerms,
+            onCheckedChange = {UiState.onEvent(RegistrationFormEvent.AcceptedTermsChanged(it))},
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color(0xff000000),
+                uncheckedColor = Color(0xff000000),
+                checkmarkColor = Color.White
+            ),
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(15.dp))
+        Text(text = "Я принимаю условия пользовательского соглашения")
+    }
 }

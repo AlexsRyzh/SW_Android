@@ -1,4 +1,4 @@
-package com.example.sw_android.welcome_page
+package com.example.sw_android.ui_page.welcome_page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -2,25 +2,27 @@ package com.example.sw_android
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.sw_android.registration_page.RegistrationScreen
-import com.example.sw_android.registration_page.RegistrationViewModel
-import com.example.sw_android.singin_page.SingInScreen
-import com.example.sw_android.singin_page.SingInViewModel
-import com.example.sw_android.welcome_page.WelcomeScreen
+import androidx.navigation.navigation
+import com.example.sw_android.ui_page.registration_page.RegistrationScreen
+import com.example.sw_android.ui_page.registration_page.RegistrationViewModel
+import com.example.sw_android.ui_page.singin_page.SingInScreen
+import com.example.sw_android.ui_page.singin_page.SingInViewModel
+import com.example.sw_android.ui_page.welcome_page.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuth
 
 
-@Composable
-fun SetupNavGraph(
-    navController: NavHostController,
+
+fun NavGraphBuilder.RegAndSingInNavGraph(
+    navController: NavController,
     mAuth: FirebaseAuth
 ){
-    NavHost(
-        navController = navController,
+    navigation(
         startDestination =  Screen.Welcome.route,
+        route = Screen.WELCOME_GRAPH.route
     ){
         composable(
             route = Screen.Welcome.route

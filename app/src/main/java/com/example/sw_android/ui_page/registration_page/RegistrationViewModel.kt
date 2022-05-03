@@ -1,12 +1,15 @@
-package com.example.sw_android.registration_page
+package com.example.sw_android.ui_page.registration_page
 
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sw_android.registration_page.errors.*
+import com.example.sw_android.model.User
+import com.example.sw_android.ui_page.registration_page.errors.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 data class RegistrationUiState(
     val name: String = "",
@@ -17,7 +20,7 @@ data class RegistrationUiState(
     val passwordError: String? = null,
     val repeatedPassword: String = "",
     val repeatedPasswordError: String? = null,
-    val acceptedTerms: Boolean = true,
+    val acceptedTerms: Boolean = false,
     val termsError: String? = null
 )
 
@@ -34,9 +37,12 @@ class RegistrationViewModel(
 ) : ViewModel() {
 
     var state by mutableStateOf(RegistrationUiState())
-    var RegSuccessful by mutableStateOf("")
+    var regSuccessful by mutableStateOf("")
+    val KEY_FIELD = "Users"
+    var mDatabase = Firebase.database.getReference(KEY_FIELD)
 
-    fun checkState(){
+
+    fun checkState(): Boolean{
         val nameResult = validateName.check(state.name)
         val emailResult = validateEmail.check(state.email)
         val passwordResult = validatePassword.check(state.password)
@@ -59,18 +65,24 @@ class RegistrationViewModel(
                 repeatedPasswordError = repeatedPasswordResult.errorMessage,
                 termsError = termsResult.errorMessage
             )
-            return
+            return false
         }
         createAccount()
+        return regSuccessful == "True"
 
     }
 
     private fun createAccount(){
         auth.createUserWithEmailAndPassword(state.email,state.password)
             .addOnCompleteListener(){task ->
-                RegSuccessful = if (task.isSuccessful){
+                regSuccessful = if (task.isSuccessful){
+                    var user = User(auth.tenantId,state.name,state.email,state.acceptedTerms,true)
+                    auth.currentUser?.let { mDatabase.child(it.uid).setValue(user).addOnCompleteListener{
+
+                    } }
                     Log.d("User successful", "createUserWithEmail:success")
                     "True"
+
                 }else{
                     Log.d("CreateUser","Error",task.exception)
                     "False"
