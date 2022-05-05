@@ -1,16 +1,13 @@
 package com.example.sw_android
 
+import android.media.Image
 import android.support.v4.os.IResultReceiver
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.material.bottomappbar.BottomAppBar
+import androidx.compose.material.BottomAppBar as BottomAppBar1
 
 
 @Composable
@@ -33,6 +32,8 @@ fun MainView(){
     }
 
 }
+
+
 
 @Composable
 fun NavTop(firma: String){     // сделать какую-либо общую перееменную для фирмы... взятое с рег.
@@ -77,72 +78,88 @@ fun NavTop(firma: String){     // сделать какую-либо общую 
 
 @Composable
 fun Nav(){
-        Column(modifier = Modifier
+        Row(modifier = Modifier
             .background(Color(red = 0xDF, green = 0xDC, blue = 0xDC, alpha = 0xFF))
-            .fillMaxWidth()
-            .fillMaxHeight(0.926f)
-            .padding(start = 10.dp, end = 10.dp, top = 35.dp, bottom = 35.dp),
+            .horizontalScroll(
+                rememberScrollState()
+            )
+        )
+        {
+            Column(modifier = Modifier
+                .background(Color(red = 0xDF, green = 0xDC, blue = 0xDC, alpha = 0xFF))
+                .fillMaxWidth()
+                .fillMaxHeight(0.926f)
+                .padding(start = 10.dp, end = 10.dp, top = 35.dp),
             ) {
 
-            Row(modifier = Modifier
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp, bottom = 15.dp)) {
+                    Text(text = "Выполнить",
+                        fontSize = 23.sp)
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .size(315.dp)
+                        .verticalScroll(rememberScrollState())
+                )
+                {
+                    TaskCard(task = "Сделать проект по самсунгу", R.drawable.emptly_chechbox)
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 18.dp)
+                            .background(Color.Transparent),
+                        contentAlignment = Alignment.Center
+                    )
+                    {
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = Color(red = 0xDF, green = 0xDC, blue = 0xDC, alpha = 0xFF)),
+                            elevation = ButtonDefaults.elevation(0.dp),
+                            contentPadding = PaddingValues(0.dp),
+                            modifier = Modifier.padding(top = 10.dp)
+                        ) 
+                        {
+                            Image(painter = painterResource(id = R.drawable.adtask1),
+                                contentDescription = "adtask",
+                                modifier = Modifier.size(54.dp))
+                        }
+                    }
+                }
+
+
+            }
+            Column(modifier = Modifier
+                .background(Color(red = 0xDF, green = 0xDC, blue = 0xDC, alpha = 0xFF))
                 .fillMaxWidth()
-                .padding(start = 5.dp, bottom = 15.dp)) {
-                Text(text = "Задачи",
-                    fontSize = 23.sp)
-            }
+                .fillMaxHeight(0.926f)
+                .padding(start = 10.dp, end = 10.dp, top = 35.dp),
+            ) {
 
-            Column(modifier = Modifier.fillMaxHeight(0.93f)) {
-                TaskCard(task = "Сделать проект по самсунгу")
-                TaskCard(task = "Подготовиться к кр по матанализу")
-                TaskCard(task = "Сходить в магазин")
-            }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp, bottom = 15.dp)) {
+                    Text(text = "Выполнено",
+                        fontSize = 23.sp)
+                }
 
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End) {
-                Image(painter = painterResource(id = R.drawable.adtask),
-                    contentDescription = "adtask",
-                    modifier = Modifier.size(38.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .size(315.dp)
+                        .verticalScroll(rememberScrollState())
+                )
+                {
+                    TaskCard(task = "Сделать проект по самсунгу", R.drawable.chekbox)
+
+                }
             }
         }
 }
-
-
-@Composable
-fun TaskCard(task: String){
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 5.dp, end = 30.dp, bottom = 5.dp, top = 5.dp),
-    elevation = 10.dp,
-    shape = RoundedCornerShape(7.dp))
-    //contentColor = Color.White)
-        {
-            Column() {
-
-
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 3.dp, top = 10.dp)
-                )
-                {
-                    Text(text = task)
-                }
-
-
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                    modifier = Modifier.padding(start = 20.dp, bottom = 3.dp)
-                )
-                {
-                    //Image(
-                    //    painter = painterResource(id = R.drawable.galochka),
-                    //    contentDescription = "galochka",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                     //   modifier = Modifier.size(10.dp)
-                    //)
-                }
-        }
-    }
-}
-
 
 
 @Composable
@@ -155,97 +172,88 @@ fun NavBot(){
         horizontalArrangement = Arrangement.SpaceBetween
     )
     {
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp),
-            contentPadding = PaddingValues(horizontal = 0.dp)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
+        ButtonNuvBot(R.drawable.chek,"chek", "Задачи")
+        ButtonNuvBot(R.drawable.chat,"chat", "Чат")
+        ButtonNuvBot(R.drawable.stat,"stat", "Статистика")
+        ButtonNuvBot(R.drawable.lupa,"lupa", "Поиск")
+        ButtonNuvBot(R.drawable.menu,"menu", "Меню")
+        }
+}
+
+
+@Composable
+fun TaskCard(task: String, IdImage: Int){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(5.dp),
+        elevation = 10.dp,
+        shape = RoundedCornerShape(7.dp))
+    //contentColor = Color.White)
+    {
+        Row() {
+
+
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp, top = 10.dp)
+                    .fillMaxWidth(0.85f)
+            )
             {
-                Image(
-                    painter = painterResource(id = R.drawable.chek),
-                    contentDescription = "chek",
-                    modifier = Modifier.size(18.dp))
-                Text(text = "Задачи",
-                    fontSize = 12.sp)
+                Text(text = task)
             }
 
-        }
 
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp),
-            contentPadding = PaddingValues(horizontal = 0.dp)) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(6.dp)
+            )
             {
-                Image(
-                    painter = painterResource(id = R.drawable.chat),
-                    contentDescription = "chat",
-                    modifier = Modifier.size(18.dp))
-                Text(text = "Чат",
-                    fontSize = 12.sp)
+                Button(onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+                    elevation = ButtonDefaults.elevation(0.dp),
+                    contentPadding = PaddingValues(3.dp)) {
+                    Image(
+                        painter = painterResource(id = IdImage),
+                        contentDescription = "Task",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
+
             }
-
         }
-
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp),
-            contentPadding = PaddingValues(horizontal = 0.dp)) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.stat  ),
-                    contentDescription = "stat",
-                    modifier = Modifier.size(18.dp))
-                Text(text = "Статистика",
-                    fontSize = 12.sp)
-            }
-
-        }
-
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp),
-            contentPadding = PaddingValues(horizontal = 0.dp)) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.lupa),
-                    contentDescription = "lupa",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                    modifier = Modifier.size(18.dp))
-                Text(text = "Поиск",
-                    fontSize = 12.sp)
-            }
-
-        }
-
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp),contentPadding = PaddingValues(horizontal = 0.dp)) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "menu",                              //ДОРАБОТАТЬ С КАРТИНКОЙ!!!
-                    modifier = Modifier.size(18.dp))
-                Text(text = "Меню",
-                    fontSize = 12.sp)
-            }
-
-        }
-
     }
 }
 
+@Composable
+fun ButtonNuvBot(idImage: Int, TextImage: String, Text: String) {
+    Button(
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+        elevation = ButtonDefaults.elevation(0.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally)
+        {
+            Image(
+                painter = painterResource(id = idImage),
+                contentDescription = TextImage,
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                text = Text,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
 
 @Preview
 @Composable
 fun PrewivNavTop() {
-    Column {
+    Column(modifier = Modifier.fillMaxHeight()) {
         NavTop("ООО.ЭнергоСтрой")
         Nav()
         NavBot()
