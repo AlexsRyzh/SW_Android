@@ -3,23 +3,33 @@ package com.example.sw_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.sw_android.ui.theme.SW_AndroidTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
+    private lateinit var auth: FirebaseAuth;
+
+    override fun onStart() {
+        super.onStart()
+        auth = Firebase.auth
+        if (auth.currentUser!=null){
+            auth.signOut()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.
         setContent {
-            MainView()
+            navController = rememberNavController()
+            RootNavGraph(
+                navController = navController,
+                mAuth = auth
+            )
         }
     }
 }
