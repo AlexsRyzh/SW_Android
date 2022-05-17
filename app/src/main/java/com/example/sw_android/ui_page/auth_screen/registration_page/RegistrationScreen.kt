@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,9 @@ fun RegistrationScreen(
     navController: NavController
 ){
     val scrollState = rememberScrollState()
+    var name by rememberSaveable {
+        mutableStateOf("")
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -64,11 +68,10 @@ fun RegistrationScreen(
                     .verticalScroll(scrollState)
             ) {
                 CustomTextField(
-                    text = UiState.state.name,
-                    onValueChange = { UiState.onEvent(RegistrationFormEvent.NameChanged(it)) },
-                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.NameChanged("")) },
+                    text = name,
+                    onValueChange = { name = it },
+                    clearOnClick = { name = "" },
                     label = "Имя",
-                    errorMessages = UiState.state.nameError
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CustomTextField(

@@ -24,97 +24,103 @@ fun SingInScreen(
     UiState: SingInViewModel,
     navController: NavController
 ){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(Color(0xFF142B6F))
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .weight(4f)
-                .fillMaxWidth()
-        ){
-            Logo(logoSize = 80.dp)
-        }
+    Box{
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .weight(9f)
-                .widthIn(max = 400.dp)
-                .clip(RoundedCornerShape(topStart = 80.dp))
-                .background(Color(0xffF6F6F6))
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    top = 30.dp
-                )
+                .background(Color(0xFF142B6F))
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(4f)
                     .fillMaxWidth()
+            ){
+                Logo(logoSize = 80.dp)
+            }
+            Column(
+                modifier = Modifier
+                    .weight(9f)
+                    .widthIn(max = 400.dp)
+                    .clip(RoundedCornerShape(topStart = 80.dp))
+                    .background(Color(0xffF6F6F6))
+                    .padding(
+                        start = 30.dp,
+                        end = 30.dp,
+                        top = 30.dp
+                    )
             ) {
-                Text(
-                    text = "Вход",
-                    color = Color(0xFF142B6F),
-                    fontSize = 32.sp
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                CustomTextField(
-                    text = UiState._uiState.email,
-                    onValueChange = {UiState.onEvent(SingInFormEvent.EmailChanged(it))},
-                    clearOnClick = {UiState.onEvent(SingInFormEvent.EmailChanged(""))},
-                    label = "Email"
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                CustomTextField(
-                    text = UiState._uiState.password,
-                    onValueChange = {UiState.onEvent(SingInFormEvent.PasswordChanged(it))},
-                    clearOnClick = {UiState.onEvent(SingInFormEvent.PasswordChanged(""))},
-                    label = "Пароль"
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                SaveMeAndForgotPassword(
-                    UiState = UiState
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                Text(
-                    text = UiState.SingInSuccessful,
-                    fontSize = 12.sp,
-                    color = Color.Red
-                )
-                TextButton(
-                    onClick = {
-                        if (UiState.checkAndSingIn()){
-                            navController.navigate(Screen.MainScreen.route)
-                        }
-                              },
-                    shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xff142B6F),
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(15.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ){
-                        Text(
-                            text = "Вход",
-                            fontSize = 20.sp,
-                        )
+                    Text(
+                        text = "Вход",
+                        color = Color(0xFF142B6F),
+                        fontSize = 32.sp
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CustomTextField(
+                        text = UiState._uiState.email,
+                        onValueChange = {UiState.onEvent(SingInFormEvent.EmailChanged(it))},
+                        clearOnClick = {UiState.onEvent(SingInFormEvent.EmailChanged(""))},
+                        label = "Email"
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CustomTextField(
+                        text = UiState._uiState.password,
+                        onValueChange = {UiState.onEvent(SingInFormEvent.PasswordChanged(it))},
+                        clearOnClick = {UiState.onEvent(SingInFormEvent.PasswordChanged(""))},
+                        label = "Пароль"
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    SaveMeAndForgotPassword(
+                        UiState = UiState
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        text = UiState.SingInSuccessful,
+                        fontSize = 12.sp,
+                        color = Color.Red
+                    )
+                    TextButton(
+                        onClick = {
+                            if (UiState.checkAndSingIn()){
+                                navController.navigate(Screen.MainScreen.route)
+                            }
+                        },
+                        shape = RoundedCornerShape(15.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xff142B6F),
+                            contentColor = Color.White
+                        ),
+                        contentPadding = PaddingValues(15.dp)
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ){
+                            Text(
+                                text = "Вход",
+                                fontSize = 20.sp,
+                            )
+                        }
                     }
                 }
+                CustomBottomBar(
+                    usualText = "Нет аккаунта?",
+                    clickText = "Зарегистрироваться",
+                    event = { navController.navigate(Screen.Registration.route)}
+                )
             }
-            CustomBottomBar(
-                usualText = "Нет аккаунта?",
-                clickText = "Зарегистрироваться",
-                event = { navController.navigate(Screen.Registration.route)}
-            )
+        }
+        Box(modifier = Modifier.fillMaxSize()){
+            CircularProgressIndicator()
         }
     }
+
 }
 
 

@@ -10,3 +10,5 @@ val Blue200  = Color(0xFF3723AF)
 val Red200 = Color(0xFFE53F1B)
 val Blue100 = Color(0xFF3C90DE)
 var Blue300 = Color(0xFF3100BC)
+
+val Black2E2E = Color(0xff2E2E2E)

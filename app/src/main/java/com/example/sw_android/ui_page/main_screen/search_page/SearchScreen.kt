@@ -187,11 +187,7 @@ private fun TaskCard(
     }
     Row() {
         Spacer(modifier = Modifier.width(20.dp))
-        Card(
-            elevation = 10.dp,
-            shape = RoundedCornerShape(25),
-            modifier = Modifier.weight(1f)
-        ) {
+        Card() {
             Row(
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 15.dp)
