@@ -31,110 +31,125 @@ fun RegistrationScreen(
     var name by rememberSaveable {
         mutableStateOf("")
     }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(Color(0xFF142B6F))
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .weight(2f)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "Регистрация",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.White,
-                modifier = Modifier
-            )
-        }
+    Box() {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .weight(9f)
-                .widthIn(max = 400.dp)
-                .clip(RoundedCornerShape(topStart = 80.dp))
-                .background(Color(0xffF6F6F6))
-                .padding(
-                    start = 30.dp,
-                    end = 30.dp,
-                    top = 30.dp
-                )
+                .background(Color(0xFF142B6F))
         ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Регистрация",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White,
+                    modifier = Modifier
+                )
+            }
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState)
-            ) {
-                CustomTextField(
-                    text = name,
-                    onValueChange = { name = it },
-                    clearOnClick = { name = "" },
-                    label = "Имя",
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                CustomTextField(
-                    text = UiState.state.email,
-                    onValueChange = { UiState.onEvent(RegistrationFormEvent.EmailChanged(it)) },
-                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.EmailChanged("")) },
-                    label = "Email",
-                    errorMessages = UiState.state.emailError
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                CustomTextField(
-                    text = UiState.state.password,
-                    onValueChange = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(it))},
-                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(""))},
-                    label = "Пароль",
-                    errorMessages = UiState.state.passwordError
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                CustomTextField(
-                    text = UiState.state.repeatedPassword,
-                    onValueChange = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged(it))},
-                    clearOnClick = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged("")) },
-                    label = "Повторите пароль",
-                    errorMessages = UiState.state.repeatedPasswordError
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                acceptedTermBar(UiState = UiState)
-                Spacer(modifier = Modifier.height(15.dp))
-                if (UiState.regSuccessful != ""){
-                    Text(
-                        text = UiState.regSuccessful,
-                        color = Color.Red
+                    .weight(9f)
+                    .widthIn(max = 400.dp)
+                    .clip(RoundedCornerShape(topStart = 80.dp))
+                    .background(Color(0xffF6F6F6))
+                    .padding(
+                        start = 30.dp,
+                        end = 30.dp,
+                        top = 30.dp
                     )
-                }
-                TextButton(
-                    onClick = {
-                        if (UiState.checkState()){
-                            navController.navigate(NavGraph.MainGraph.route)
-                        }
-                              },
-                    shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xff142B6F),
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(15.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(scrollState)
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ){
+                    CustomTextField(
+                        text = UiState.state.name,
+                        onValueChange = { UiState.onEvent(RegistrationFormEvent.NameChanged(it)) },
+                        clearOnClick = { UiState.onEvent(RegistrationFormEvent.NameChanged(""))},
+                        label = "Имя",
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CustomTextField(
+                        text = UiState.state.email,
+                        onValueChange = { UiState.onEvent(RegistrationFormEvent.EmailChanged(it)) },
+                        clearOnClick = { UiState.onEvent(RegistrationFormEvent.EmailChanged("")) },
+                        label = "Email",
+                        errorMessages = UiState.state.emailError
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CustomTextField(
+                        text = UiState.state.password,
+                        onValueChange = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(it))},
+                        clearOnClick = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(""))},
+                        label = "Пароль",
+                        errorMessages = UiState.state.passwordError
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CustomTextField(
+                        text = UiState.state.repeatedPassword,
+                        onValueChange = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged(it))},
+                        clearOnClick = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged("")) },
+                        label = "Повторите пароль",
+                        errorMessages = UiState.state.repeatedPasswordError
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    acceptedTermBar(UiState = UiState)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    if (UiState.regSuccessful != ""){
                         Text(
-                            text = "Регистрация",
-                            fontSize = 20.sp,
+                            text = UiState.regSuccessful,
+                            color = Color.Red
                         )
                     }
+                    TextButton(
+                        onClick = {
+                            UiState.checkState()
+                        },
+                        shape = RoundedCornerShape(15.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xff142B6F),
+                            contentColor = Color.White
+                        ),
+                        contentPadding = PaddingValues(15.dp)
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ){
+                            Text(
+                                text = "Регистрация",
+                                fontSize = 20.sp,
+                            )
+                        }
+                    }
                 }
+                CustomBottomBar(
+                    usualText = "Есть аккаунт?",
+                    clickText = "Войти",
+                    event = {navController.navigate(Screen.SingIn.route)}
+                )
             }
-            CustomBottomBar(
-                usualText = "Есть аккаунт?",
-                clickText = "Войти",
-                event = {navController.navigate(Screen.SingIn.route)}
-            )
+        }
+        if (UiState.activeProgressBar)
+        {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
+                CircularProgressIndicator(
+                    color = Color(0xFF142B6F)
+                )
+            }
+        }
+        if (UiState.regSuccessful == "True"){
+            navController.navigate(Screen.MainScreen.route)
         }
     }
 }

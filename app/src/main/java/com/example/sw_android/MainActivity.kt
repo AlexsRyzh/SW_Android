@@ -18,20 +18,16 @@ class MainActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         auth = Firebase.auth
-        if (auth.currentUser!=null){
-            auth.signOut()
-        }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.
         setContent {
-//            navController = rememberNavController()
-//            RootNavGraph(
-//                navController = navController,
-//                mAuth = auth
-//            )
-            TaskScreen(navController = rememberNavController())
+            navController = rememberNavController()
+            RootNavGraph(
+                navController = navController,
+               mAuth = auth
+           )
         }
     }
 }

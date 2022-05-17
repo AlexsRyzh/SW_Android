@@ -24,7 +24,7 @@ fun SingInScreen(
     UiState: SingInViewModel,
     navController: NavController
 ){
-    Box{
+    Box(){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -87,9 +87,7 @@ fun SingInScreen(
                     )
                     TextButton(
                         onClick = {
-                            if (UiState.checkAndSingIn()){
-                                navController.navigate(Screen.MainScreen.route)
-                            }
+                            UiState.checkAndSingIn()
                         },
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -116,9 +114,22 @@ fun SingInScreen(
                 )
             }
         }
-        Box(modifier = Modifier.fillMaxSize()){
-            CircularProgressIndicator()
+        if (UiState.activeProgressBar)
+        {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
+                CircularProgressIndicator(
+                    color = Color(0xFF142B6F)
+                )
+            }
         }
+        if (UiState.SingInSuccessful == "Всё верно"){
+            navController.navigate(Screen.MainScreen.route)
+        }
+
     }
 
 }

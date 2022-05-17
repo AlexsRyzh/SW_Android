@@ -1,26 +1,30 @@
 package com.example.sw_android.ui_page.main_screen.task_page
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.legacy.widget.Space
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.R
@@ -46,52 +50,125 @@ fun TaskScreen(
         Task(),
         Task()
     )
-    Column(
-        modifier = Modifier
-            .background(color = Color(0xffF6F6F6))
-            .fillMaxSize()
-    ) {
-        Header(title = "Задачи", spaceName = "Мое пространство")
-        LazyRow(
-            contentPadding = PaddingValues(
-                top = 30.dp,
-                start = 20.dp,
-                end = 20.dp
-            ),
-            modifier = Modifier.weight(1f)
-        ){
-            items(3){
-                LazyColumn{
-                    item{
-                        HeaderList(title = "Законечено", numberOf = tasks.size)
-                        Spacer(modifier = Modifier.height(20.dp))
+    var activeAddField by remember {
+        mutableStateOf(false)
+    }
+    Box{
+        Column(
+            modifier = Modifier
+                .background(color = Color(0xffF6F6F6))
+                .fillMaxSize()
+        ) {
+            Header(title = "Задачи", spaceName = "Мое пространство")
+            LazyRow(
+                contentPadding = PaddingValues(
+                    top = 30.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                ),
+                modifier = Modifier.weight(1f)
+            ){
+                items(3){
+                    LazyColumn{
+                        item{
+                            HeaderList(title = "Законечено", numberOf = tasks.size)
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                        items(tasks){
+                            TaskCard(text = it.title, day = it.day, month = it.month)
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
                     }
-                    items(tasks){
-                        TaskCard(text = it.title, day = it.day, month = it.month)
-                        Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.width(20.dp))
+                }
+                item{
+                    TextButton(
+                        onClick = { activeAddField = true },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Black2E2E,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.width(300.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.add_box),
+                                contentDescription = null,
+                                modifier = Modifier.size(25.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = "Добавить раздел",
+                            )
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.width(20.dp))
             }
-            item{
-                TextButton(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Black2E2E,
-                        contentColor = Color.White
-                    ),
+        }
+        if (activeAddField){
+            var text by remember{mutableStateOf("")}
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(0.4f)
+                    .background(Color.Black))
+                Card(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(20),
                     modifier = Modifier.width(300.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 30.dp, bottom = 30.dp, start = 20.dp, end = 20.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.add_box),
-                            contentDescription = null,
-                            modifier = Modifier.size(25.dp)
+                        Text(
+                            text = "Добавить этап",
+                            fontSize = 16.sp,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Добавить раздел")
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Column {
+                            BasicTextField(
+                                value = text,
+                                onValueChange = {text = it},
+                                textStyle = TextStyle(
+                                    fontSize = 16.sp
+                                ),
+                                singleLine = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(Color.Black))
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Отмена",
+                                fontSize = 16.sp,
+                                modifier = Modifier.clickable { activeAddField = false }
+                            )
+                            Spacer(modifier = Modifier.width(20.dp))
+                            Text(
+                                text = "Добавить",
+                                fontSize = 16.sp,
+                                color = Color.Red
+                            )
+                        }
                     }
                 }
             }
@@ -115,7 +192,7 @@ private fun Header(
             )
             .padding(
                 horizontal = 25.dp,
-                vertical = 15.dp
+                vertical = 10.dp
             )
     ) {
         Column() {
@@ -161,21 +238,21 @@ private fun settingIcon(){
             painter = painterResource(id = R.drawable.cicle),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.size(4.dp)
+            modifier = Modifier.size(5.dp)
         )
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(3.dp))
         Icon(
             painter = painterResource(id = R.drawable.cicle),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.size(4.dp)
+            modifier = Modifier.size(5.dp)
         )
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(3.dp))
         Icon(
             painter = painterResource(id = R.drawable.cicle),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.size(4.dp)
+            modifier = Modifier.size(5.dp)
         )
     }
 }
@@ -202,7 +279,7 @@ private fun TaskCard(
         ) {
             Text(
                 text = text,
-                fontSize = 15.sp,
+                fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Clip
             )
@@ -224,9 +301,9 @@ private fun DateCard(
         modifier = Modifier
             .background(
                 color = Color(0xff2E2E2E),
-                shape = RoundedCornerShape(50)
+                shape = RoundedCornerShape(40)
             )
-            .width(52.dp)
+            .width(60.dp)
             .height(20.dp)
             .padding(
                 horizontal = 5.dp,
@@ -243,7 +320,7 @@ private fun DateCard(
         Text(
             text = day,
             color = Color.White,
-            fontSize = 8.sp,
+            fontSize = 12.sp,
             maxLines = 1
         )
         Spacer(modifier = Modifier.width(3.dp))
@@ -251,7 +328,7 @@ private fun DateCard(
             text = month,
             color = Color.White,
             overflow = TextOverflow.Clip,
-            fontSize = 8.sp,
+            fontSize = 12.sp,
             maxLines = 1
         )
     }

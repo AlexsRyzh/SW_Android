@@ -99,6 +99,12 @@ fun BottomNavigationGraph(navController: NavController){
         ),
         BottomNavItem(
             icon = {
+                AddIcon()
+            },
+            route = Screen.AddNewTaskScreen.route
+        ),
+        BottomNavItem(
+            icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.pie_chart),
                     contentDescription = null,

@@ -25,12 +25,14 @@ class SingInViewModel(
 
     var _uiState by mutableStateOf(SingInUiState())
     var SingInSuccessful by mutableStateOf("")
+    var activeProgressBar by mutableStateOf(false)
 
     private fun singInAccount(){
         auth.signInWithEmailAndPassword(_uiState.email,_uiState.password)
             .addOnCompleteListener{
                 if (it.isSuccessful){
                     Firebase.database.reference.child(USERS_KEY).child(auth.uid!!).child(SAVE_ME).setValue(_uiState.saveMe)
+                    SingInSuccessful = "Всё верно"
                 }else{
                     Log.d("ErrorSingIn","SingInUser::Error",it.exception)
                     SingInSuccessful = " Неверный логин или пароль "
@@ -38,13 +40,14 @@ class SingInViewModel(
             }
     }
 
-    fun checkAndSingIn():Boolean{
+    fun checkAndSingIn(){
+        activeProgressBar = true;
         if (!_uiState.email.isBlank() && !_uiState.password.isBlank()){
             singInAccount()
         }else{
             SingInSuccessful = "Поля Email или Пароль не должны быть пустыми"
         }
-        return SingInSuccessful != "Поля Email или Пароль не должны быть пустыми" && SingInSuccessful != " Неверный логин или пароль "
+        activeProgressBar = false;
     }
 
     fun onEvent(event: SingInFormEvent){

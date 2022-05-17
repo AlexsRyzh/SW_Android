@@ -42,9 +42,13 @@ class RegistrationViewModel(
     var regSuccessful by mutableStateOf("")
     val KEY_FIELD = "Users"
     var mDatabase = Firebase.database.getReference(KEY_FIELD)
+    var activeProgressBar by mutableStateOf(false)
 
 
-    fun checkState(): Boolean{
+    fun checkState(){
+
+        activeProgressBar = true
+
         val nameResult = validateName.check(state.name)
         val emailResult = validateEmail.check(state.email)
         val passwordResult = validatePassword.check(state.password)
@@ -68,11 +72,11 @@ class RegistrationViewModel(
                 termsError = termsResult.errorMessage
             )
             regSuccessful = "False"
-            return false
+            activeProgressBar = false
+            return
         }
         createAccount()
-        return regSuccessful != "False"
-
+        activeProgressBar = false
     }
 
     private fun createAccount(){
