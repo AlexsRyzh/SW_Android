@@ -1,5 +1,7 @@
 package com.example.sw_android.ui_page.main_screen.main_page
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -18,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.MainNavGraph
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     navController: NavController
@@ -26,7 +29,8 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             BottomNavigationGraph(
-                navController = bottomNavController,
+                navControllerBottom = bottomNavController,
+                navController = navController
             )
             },
     ) {
@@ -39,6 +43,7 @@ fun MainScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true)
 @Composable
 private fun MainScreenPreview(){

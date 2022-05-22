@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
             navController = rememberNavController()
             RootNavGraph(
                 navController = navController,
-               mAuth = auth
+                mAuth = auth
            )
         }
     }

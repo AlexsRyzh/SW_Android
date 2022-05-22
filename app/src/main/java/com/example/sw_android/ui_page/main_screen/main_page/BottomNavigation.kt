@@ -75,7 +75,10 @@ fun MenuIcon(){
 }
 
 @Composable
-fun BottomNavigationGraph(navController: NavController){
+fun BottomNavigationGraph(
+    navControllerBottom: NavController,
+    navController: NavController
+){
     val items = listOf(
         BottomNavItem(
             icon = {
@@ -122,19 +125,31 @@ fun BottomNavigationGraph(navController: NavController){
     BottomNavigation(
         backgroundColor = Color(0xffF6F7FB)
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val navBackStackEntry by navControllerBottom.currentBackStackEntryAsState()
         items.forEach { item ->
             val selected = item.route == navBackStackEntry?.destination?.route
             BottomNavigationItem(
                 selected = selected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (item.route == Screen.AddNewTaskScreen.route){
+                        navController.navigate(item.route){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+
+                    }else{
+                        navControllerBottom.navigate(item.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+
                 },
                 icon = item.icon,
                 selectedContentColor = Color(0xff000000),

@@ -11,6 +11,7 @@ import com.example.sw_android.ui_page.auth_screen.registration_page.errors.*
 import com.example.sw_android.ui_page.auth_screen.singin_page.SingInViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 data class RegistrationUiState(
@@ -40,8 +41,7 @@ class RegistrationViewModel(
 
     var state by mutableStateOf(RegistrationUiState())
     var regSuccessful by mutableStateOf("")
-    val KEY_FIELD = "Users"
-    var mDatabase = Firebase.database.getReference(KEY_FIELD)
+    val db = Firebase.firestore.collection("User")
     var activeProgressBar by mutableStateOf(false)
 
 
@@ -83,8 +83,8 @@ class RegistrationViewModel(
         auth.createUserWithEmailAndPassword(state.email,state.password)
             .addOnCompleteListener{task ->
                 if (task.isSuccessful){
-                    var user = User(auth.tenantId,state.name,state.email,state.acceptedTerms,true)
-                    auth.currentUser?.let { mDatabase.child(it.uid).setValue(user)}
+                    var user = User(state.name,state.email,state.password,state.acceptedTerms,true)
+                    db.document(auth.uid!!).set(user)
                     Log.d("User successful", "createUserWithEmail:success")
                     regSuccessful = "True"
                 }else{

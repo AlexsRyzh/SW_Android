@@ -1,12 +1,18 @@
 package com.example.sw_android
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.sw_android.ui_page.main_screen.add_new_task_page.AddNewTaskScreen
+import com.example.sw_android.ui_page.main_screen.add_new_task_page.AddNewTaskViewModel
 import com.example.sw_android.ui_page.main_screen.main_page.MainScreen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.homeNavGraph(
     navController: NavController
 ){
@@ -19,6 +25,15 @@ fun NavGraphBuilder.homeNavGraph(
         ){
             MainScreen(
                 navController = navController
+            )
+        }
+        composable(
+            route = Screen.AddNewTaskScreen.route
+        ){
+            val addNewTaskViewModel: AddNewTaskViewModel = AddNewTaskViewModel(Firebase.auth)
+            AddNewTaskScreen(
+                navController = navController,
+                addNewTaskViewModel = addNewTaskViewModel
             )
         }
 

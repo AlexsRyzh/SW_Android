@@ -1,6 +1,5 @@
 package com.example.sw_android.ui_page.main_screen.task_page
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
@@ -8,15 +7,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -25,99 +25,114 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.legacy.widget.Space
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.R
 import com.example.sw_android.ui.theme.Black2E2E
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
+import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 
-data class Task(
-    val title: String = "Title",
-    val description: String = "Description",
-    val day: String = "12",
-    val month: String = "апрель"
-)
 
+@OptIn(ExperimentalSnapperApi::class, ExperimentalPagerApi::class)
 @Composable
 fun TaskScreen(
-    navController: NavController
-){
-    val tasks = mutableListOf<Task>(
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task()
-    )
+    navController: NavController,
+    taskFieldViewModel: TaskViewModel
+) {
     var activeAddField by remember {
         mutableStateOf(false)
     }
-    Box{
+    Box {
         Column(
             modifier = Modifier
                 .background(color = Color(0xffF6F6F6))
                 .fillMaxSize()
         ) {
             Header(title = "Задачи", spaceName = "Мое пространство")
-            LazyRow(
+            HorizontalPager(
+                count = taskFieldViewModel.state.taskFields.size + 1,
                 contentPadding = PaddingValues(
-                    top = 30.dp,
+                    top = 20.dp,
                     start = 20.dp,
                     end = 20.dp
-                ),
-                modifier = Modifier.weight(1f)
-            ){
-                items(3){
-                    LazyColumn{
-                        item{
-                            HeaderList(title = "Законечено", numberOf = tasks.size)
-                            Spacer(modifier = Modifier.height(20.dp))
+                )
+            ) { page ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    when (page) {
+                        taskFieldViewModel.state.taskFields.size -> {
+                            TextButton(
+                                onClick = { activeAddField = true },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Black2E2E,
+                                    contentColor = Color.White
+                                ),
+                                modifier = Modifier.width(300.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.add_box),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(25.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = "Добавить раздел",
+                                    )
+                                }
+                            }
                         }
-                        items(tasks){
-                            TaskCard(text = it.title, day = it.day, month = it.month)
-                            Spacer(modifier = Modifier.height(20.dp))
+                        else -> {
+                            HeaderList(
+                                title = taskFieldViewModel.state.taskFields[page],
+                                numberOf = taskFieldViewModel.state.tasks[taskFieldViewModel.state.taskFields[page]]?.size
+                                    ?: 0,
+                                taskFieldViewModel = taskFieldViewModel
+                            )
+                            LazyColumn() {
+                                items(
+                                    taskFieldViewModel.state.tasks[taskFieldViewModel.state.taskFields[page]]
+                                        ?: listOf()
+                                ) {
+                                    TaskCard(
+                                        text = it.title,
+                                        day = it.day.toString(),
+                                        month = it.month.toString()
+                                    )
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                }
+                            }
+
                         }
                     }
-                    Spacer(modifier = Modifier.width(20.dp))
+
                 }
-                item{
-                    TextButton(
-                        onClick = { activeAddField = true },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Black2E2E,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier.width(300.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.add_box),
-                                contentDescription = null,
-                                modifier = Modifier.size(25.dp)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = "Добавить раздел",
-                            )
-                        }
-                    }
-                }
+
+
             }
         }
-        if (activeAddField){
-            var text by remember{mutableStateOf("")}
+        if (activeAddField) {
+            var text by remember { mutableStateOf("") }
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
-            ){
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .alpha(0.4f)
-                    .background(Color.Black))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(0.4f)
+                        .background(Color.Black)
+                )
                 Card(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(20),
@@ -138,7 +153,7 @@ fun TaskScreen(
                         Column {
                             BasicTextField(
                                 value = text,
-                                onValueChange = {text = it},
+                                onValueChange = { text = it },
                                 textStyle = TextStyle(
                                     fontSize = 16.sp
                                 ),
@@ -147,10 +162,12 @@ fun TaskScreen(
                                     .fillMaxWidth()
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(Color.Black))
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(1.dp)
+                                    .background(Color.Black)
+                            )
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         Row(
@@ -166,7 +183,13 @@ fun TaskScreen(
                             Text(
                                 text = "Добавить",
                                 fontSize = 16.sp,
-                                color = Color.Red
+                                color = Color.Red,
+                                modifier = Modifier.clickable {
+                                    taskFieldViewModel.setWorkFieldName(
+                                        text
+                                    )
+                                    activeAddField = false
+                                }
                             )
                         }
                     }
@@ -176,11 +199,12 @@ fun TaskScreen(
     }
 }
 
+
 @Composable
 private fun Header(
     title: String,
     spaceName: String
-){
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -215,24 +239,43 @@ private fun Header(
 @Composable
 private fun HeaderList(
     title: String,
-    numberOf: Int
-){
-    Row() {
-        Text(
-            text = title,
-            fontSize = 20.sp
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = "($numberOf)",
-            fontSize = 14.sp
-        )
+    numberOf: Int,
+    taskFieldViewModel: TaskViewModel
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                text = title,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = "($numberOf)",
+                fontSize = 14.sp
+            )
+        }
+        Row() {
+            IconButton(onClick = {
+                taskFieldViewModel.deletTaskField(title)
+            }) {
+                Icon(imageVector = Icons.Filled.Close, contentDescription =null)
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+        }
+        
     }
+
 }
 
 
 @Composable
-private fun settingIcon(){
+private fun settingIcon() {
     Column() {
         Icon(
             painter = painterResource(id = R.drawable.cicle),
@@ -254,6 +297,7 @@ private fun settingIcon(){
             tint = Color.White,
             modifier = Modifier.size(5.dp)
         )
+        Spacer(modifier = Modifier.width(10.dp))
     }
 }
 
@@ -262,7 +306,7 @@ private fun TaskCard(
     text: String,
     day: String,
     month: String
-){
+) {
     Card(
         elevation = 10.dp,
         shape = RoundedCornerShape(20),
@@ -295,7 +339,7 @@ private fun TaskCard(
 private fun DateCard(
     day: String,
     month: String
-){
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -310,7 +354,7 @@ private fun DateCard(
             )
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.calendar),
+            painter = painterResource(id = R.drawable.calendar_done),
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier
@@ -334,8 +378,3 @@ private fun DateCard(
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-private fun TaskScreenPreview(){
-    TaskScreen(navController = rememberNavController())
-}

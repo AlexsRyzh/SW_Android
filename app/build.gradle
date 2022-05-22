@@ -34,6 +34,12 @@ android {
     compileOptions {
         sourceCompatibility "1.8"
         targetCompatibility "1.8"
+
+        coreLibraryDesugaringEnabled true
+
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -54,9 +60,20 @@ android {
 }
 
 dependencies {
+
+    ///Accompanist
+    implementation 'com.google.accompanist:accompanist-pager:0.24.9-beta'
+    implementation "dev.chrisbanes.snapper:snapper:0.2.1"
+
+    ///Calendar
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.7.1"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
+
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-firestore:24.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
     def nav_version = "2.4.2"
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
