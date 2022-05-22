@@ -6,4 +6,5 @@ data class User(
     val password: String? = null,
     val acceptedTerms: Boolean? = null,
     val saveMe: Boolean? = null,
+    var picture: Boolean? = null
 )
