@@ -13,6 +13,7 @@ import com.example.sw_android.ui_page.main_screen.add_new_task_page.AddNewTaskSc
 import com.example.sw_android.ui_page.main_screen.add_new_task_page.AddNewTaskViewModel
 import com.example.sw_android.ui_page.main_screen.analitic_page.AnaliticScreen
 import com.example.sw_android.ui_page.main_screen.menu_page.MenuScreen
+import com.example.sw_android.ui_page.main_screen.menu_page.MenuViewModel
 import com.example.sw_android.ui_page.main_screen.search_page.SearchScreen
 import com.example.sw_android.ui_page.main_screen.task_page.TaskScreen
 import com.example.sw_android.ui_page.main_screen.task_page.TaskViewModel
@@ -53,6 +54,7 @@ fun MainNavGraph(
             route = Screen.MenuScreen.route
         ){
             MenuScreen(navController = navController)
+
         }
     }
 }

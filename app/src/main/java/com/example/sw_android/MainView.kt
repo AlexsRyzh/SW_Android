@@ -30,7 +30,6 @@ fun MainView(){
         Nav()
         NavBot()
     }
-
 }
 
 
