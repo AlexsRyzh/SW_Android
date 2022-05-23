@@ -69,6 +69,7 @@ fun AddNewTaskScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
         ModalBottomSheetLayout(
             sheetState = state,
