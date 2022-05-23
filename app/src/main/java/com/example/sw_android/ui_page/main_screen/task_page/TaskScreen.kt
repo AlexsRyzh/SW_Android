@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,7 @@ fun TaskScreen(
         ) {
             Header(title = "Задачи", spaceName = "Мое пространство")
             HorizontalPager(
-                count = taskFieldViewModel.state.taskFields.size + 1,
+                count = taskFieldViewModel.state.taskFields.size + 2,
                 contentPadding = PaddingValues(
                     top = 20.dp,
                     start = 20.dp,
@@ -69,7 +70,7 @@ fun TaskScreen(
                         .fillMaxSize()
                 ) {
                     when (page) {
-                        taskFieldViewModel.state.taskFields.size -> {
+                        taskFieldViewModel.state.taskFields.size+1-> {
                             TextButton(
                                 onClick = { activeAddField = true },
                                 colors = ButtonDefaults.buttonColors(
@@ -93,20 +94,44 @@ fun TaskScreen(
                                 }
                             }
                         }
+                        0 -> {
+                            HeaderList(
+                                title = "Готово",
+                                numberOf = taskFieldViewModel.state.tasks.count { it.done == true },
+                                taskFieldViewModel = taskFieldViewModel,
+                                canDel = false
+                            )
+                            LazyColumn() {
+                                items(
+                                    taskFieldViewModel.state.tasks.filter { it.done == true }
+                                ) {
+                                    TaskCard(
+                                        text = it.title!!,
+                                        day = it.date?.day,
+                                        month = it.date?.month,
+                                        taskViewModel = taskFieldViewModel,
+                                        taskUid = it.TaskUid!!,
+                                        navController = navController2,
+                                        done = true
+                                    )
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                }
+                            }
+                        }
                         else -> {
                             HeaderList(
-                                title = taskFieldViewModel.state.taskFields[page],
-                                numberOf = taskFieldViewModel.state.tasks.count { it.taskField == taskFieldViewModel.state.taskFields[page] },
+                                title = taskFieldViewModel.state.taskFields[page-1],
+                                numberOf = taskFieldViewModel.state.tasks.count { it.taskField == taskFieldViewModel.state.taskFields[page-1] && it.done != true },
                                 taskFieldViewModel = taskFieldViewModel
                             )
                             LazyColumn() {
                                 items(
-                                    taskFieldViewModel.state.tasks.filter { it.taskField == taskFieldViewModel.state.taskFields[page]}
+                                    taskFieldViewModel.state.tasks.filter { it.taskField == taskFieldViewModel.state.taskFields[page-1] && it.done != true}
                                 ) {
                                     TaskCard(
                                         text = it.title!!,
-                                        day = it.day,
-                                        month = it.month,
+                                        day = it.date?.day,
+                                        month = it.date?.month,
                                         taskViewModel = taskFieldViewModel,
                                         taskUid = it.TaskUid!!,
                                         navController = navController2
@@ -186,12 +211,15 @@ fun TaskScreen(
                             Text(
                                 text = "Добавить",
                                 fontSize = 16.sp,
-                                color = Color.Red,
+                                color = if (!text.isBlank() )Color.Red else Color(0xFFDBDBDB),
                                 modifier = Modifier.clickable {
-                                    taskFieldViewModel.setWorkFieldName(
-                                        text
-                                    )
-                                    activeAddField = false
+                                    if (!text.isBlank()){
+                                        taskFieldViewModel.setWorkFieldName(
+                                            text
+                                        )
+                                        activeAddField = false
+                                    }
+
                                 }
                             )
                         }
@@ -243,7 +271,8 @@ private fun Header(
 private fun HeaderList(
     title: String,
     numberOf: Int,
-    taskFieldViewModel: TaskViewModel
+    taskFieldViewModel: TaskViewModel,
+    canDel: Boolean = true
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -263,14 +292,17 @@ private fun HeaderList(
                 fontSize = 14.sp
             )
         }
-        Row() {
-            IconButton(onClick = {
-                taskFieldViewModel.deletTaskField(title)
-            }) {
-                Icon(imageVector = Icons.Filled.Close, contentDescription =null)
+        if (canDel){
+            Row() {
+                IconButton(onClick = {
+                    taskFieldViewModel.deletTaskField(title)
+                }) {
+                    Icon(imageVector = Icons.Filled.Close, contentDescription =null)
+                }
+                Spacer(modifier = Modifier.width(20.dp))
             }
-            Spacer(modifier = Modifier.width(20.dp))
         }
+
         
     }
 
@@ -311,7 +343,8 @@ private fun TaskCard(
     month: Int?,
     taskUid: String,
     taskViewModel: TaskViewModel,
-    navController: NavController
+    navController: NavController,
+    done: Boolean = false
 ) {
     Card(
         elevation = 10.dp,
@@ -332,7 +365,8 @@ private fun TaskCard(
                 text = text,
                 fontSize = 18.sp,
                 maxLines = 1,
-                overflow = TextOverflow.Clip
+                overflow = TextOverflow.Clip,
+                textDecoration = if (done) TextDecoration.LineThrough else null
             )
             Spacer(modifier = Modifier.height(5.dp))
             if (day !=null && month!=null)
@@ -355,7 +389,6 @@ private fun DateCard(
                 color = Color(0xff2E2E2E),
                 shape = RoundedCornerShape(40)
             )
-            .width(60.dp)
             .height(20.dp)
             .padding(
                 horizontal = 5.dp,

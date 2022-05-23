@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.sw_android.model.Date2
 import com.example.sw_android.model.TaskDB
 import com.example.sw_android.model.TaskFields
 import com.google.firebase.auth.FirebaseAuth
@@ -19,9 +20,11 @@ data class EdiTaskUiState(
     var task: TaskDB = TaskDB(
         title = "",
         description = "",
-        day = null,
-        month = null,
-        year = null
+        date = Date2(
+            day = null,
+            month = null,
+            year = null
+        )
     )
 )
 
@@ -79,15 +82,20 @@ class EditeTaskViewModel(
 
     fun saveTask(){
         auth.uid?.let {
-            val taskDB = TaskDB(
+            var taskDB = TaskDB(
                 UserUid = auth.uid,
                 taskField = state.selectedTaskField,
                 title = state.task.title,
                 description = state.task.description,
-                day = state.task.day,
-                month = state.task.month,
-                year = state.task.year
+                done = state.task.done,
+                date = state.task.date,
+                dateCreated = state.task.dateCreated
             )
+            if (state.task.done == true){
+                taskDB = taskDB.copy(
+                    taskField = null
+                )
+            }
             db.collection("Task").document(taskUid).set(taskDB)
 
         }
@@ -139,19 +147,31 @@ class EditeTaskViewModel(
         year: Int
     ){
         val task1 = state.task.copy(
-            day = day,
-            month = month,
-            year = year
+            date = Date2(
+                day = day,
+                month = month,
+                year = year
+            )
         )
         state = state.copy(
-            task = task1
+            task = task1.copy()
         )
         currentDate()
     }
 
+    fun changeDone(
+        newDone: Boolean
+    ){
+        state = state.copy(
+            task = state.task.copy(
+                done = newDone
+            )
+        )
+    }
+
     private fun currentDate(){
-        if (state.task.day != null && state.task.month != null && state.task.year != null){
-            currentDate = "${state.task.day}/${if (state.task.month!! <10) "0"+state.task.month.toString() else state.task.month}/${state.task.year}"
+        if (state.task.date?.day != null && state.task.date?.month != null && state.task.date?.year != null){
+            currentDate = "${state.task.date?.day}/${if (state.task.date?.month!! <10) "0"+state.task.date?.month.toString() else state.task.date?.month}/${state.task.date?.year}"
         }
     }
 

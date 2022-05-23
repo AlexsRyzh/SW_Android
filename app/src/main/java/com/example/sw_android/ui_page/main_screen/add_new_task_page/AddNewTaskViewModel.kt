@@ -6,12 +6,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.sw_android.model.Date2
 import com.example.sw_android.model.TaskDB
 import com.example.sw_android.model.TaskFields
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 data class addNewTaskUiState(
     var taskFields: MutableList<addNewTaskField> = mutableListOf(),
@@ -19,9 +22,7 @@ data class addNewTaskUiState(
     var task: TaskDB = TaskDB(
         title = "",
         description = "",
-        day = null,
-        month = null,
-        year = null
+        date = Date2()
     )
 )
 
@@ -77,9 +78,8 @@ class AddNewTaskViewModel(
                 taskField = state.selectedTaskField,
                 title = state.task.title,
                 description = state.task.description,
-                day = state.task.day,
-                month = state.task.month,
-                year = state.task.year
+                date = state.task.date?.copy(),
+                dateCreated = Timestamp(Date())
             )
             db.collection("Task").add(taskDB)
 
@@ -132,19 +132,21 @@ class AddNewTaskViewModel(
         year: Int
     ){
         val task1 = state.task.copy(
-            day = day,
-            month = month,
-            year = year
+            date = Date2(
+                day = day,
+                month = month,
+                year = year
+            )
         )
         state = state.copy(
-            task = task1
+            task = task1.copy()
         )
         currentDate()
     }
 
     private fun currentDate(){
-        if (state.task.day != null && state.task.month != null && state.task.year != null){
-            currentDate = "${state.task.day}/${if (state.task.month!! <10) "0"+state.task.month.toString() else state.task.month}/${state.task.year}"
+        if (state.task.date?.day != null && state.task.date?.month != null && state.task.date?.year != null){
+            currentDate = "${state.task.date?.day}/${if (state.task.date?.month!! <10) "0"+state.task.date?.month.toString() else state.task.date?.month}/${state.task.date?.year}"
         }
     }
 

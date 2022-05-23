@@ -7,12 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.sw_android.ui_page.main_screen.task_page.TaskScreen
+import com.example.sw_android.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
@@ -24,10 +23,16 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         auth = Firebase.auth
         var db = Firebase.firestore
-        val settings = firestoreSettings {
-            isPersistenceEnabled = true
+        if (auth.currentUser != null){
+            auth.uid?.let {
+                db.collection("User").document(it).get().addOnSuccessListener {
+                    var user = it.toObject<User>()
+                    if (user?.saveMe==false){
+                        auth.signOut()
+                    }
+                }
+            }
         }
-        db.firestoreSettings = settings
     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

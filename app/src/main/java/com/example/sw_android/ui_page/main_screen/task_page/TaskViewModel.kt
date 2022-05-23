@@ -56,6 +56,7 @@ class TaskViewModel(
                         task1.add(document.toObject<TaskDB>().copy(TaskUid = document.id))
                         Log.d("fdsdf","document -----------------------------------------------------------------------------")
                     }
+                    task1.sortBy { it.dateCreated }
                     state = state.copy(
                         tasks = task1.filter { true } as MutableList<TaskDB>
                     )

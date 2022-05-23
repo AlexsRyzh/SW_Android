@@ -28,14 +28,11 @@ fun RegistrationScreen(
     navController: NavController
 ){
     val scrollState = rememberScrollState()
-    var name by rememberSaveable {
-        mutableStateOf("")
-    }
     Box() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .background(Color(0xFF142B6F))
+                .background(Color.Black)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -113,7 +110,7 @@ fun RegistrationScreen(
                         },
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xff142B6F),
+                            backgroundColor = Color.Black,
                             contentColor = Color.White
                         ),
                         contentPadding = PaddingValues(15.dp)

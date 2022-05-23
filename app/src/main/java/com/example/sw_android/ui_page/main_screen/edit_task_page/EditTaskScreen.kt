@@ -10,15 +10,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -301,31 +304,9 @@ private fun Header(
     ) {
         TextButton(
             modifier = Modifier.size(60.dp),
-            onClick = { navController.navigateUp() },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                contentColor = Color.Black
-            ),
-            contentPadding = PaddingValues(
-                all = 0.dp
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = null,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-        Text(
-            text = "Новая задача",
-            fontSize = 20.sp
-        )
-        TextButton(
-            modifier = Modifier.size(60.dp),
             onClick = {
                 editeTaskViewModel.saveTask()
-                navController.navigateUp()
-            },
+                navController.navigateUp()},
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent,
                 contentColor = Color.Black
@@ -340,6 +321,60 @@ private fun Header(
                 modifier = Modifier.size(25.dp)
             )
         }
+        Text(
+            text = "Новая задача",
+            fontSize = 20.sp
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CircleCheckbox(
+                selected = editeTaskViewModel.state.task.done,
+                onChecked = { editeTaskViewModel.changeDone(!editeTaskViewModel.state.task.done)}
+            )
+            TextButton(
+                modifier = Modifier.size(60.dp),
+                onClick = {
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Transparent,
+                    contentColor = Color.Black
+                ),
+                contentPadding = PaddingValues(
+                    all = 0.dp
+                )
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.delete_forever),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+        }
+
+    }
+}
+@Composable
+fun CircleCheckbox(selected: Boolean, enabled: Boolean = true, onChecked: () -> Unit) {
+
+    val imageVector = if (selected) painterResource(id = R.drawable.check_circle) else painterResource(id = R.drawable.circle)
+    val tint = if (selected) Color(0xffE52900).copy(alpha = 0.8f) else Color.Gray.copy(alpha = 0.8f)
+    val background = if (selected) Color.White else Color.Transparent
+
+    TextButton(onClick = { onChecked() },
+        modifier = Modifier
+            .height(60.dp)
+            .width(40.dp),
+        enabled = enabled,
+        contentPadding = PaddingValues(all = 0.dp)
+    ) {
+
+        Icon(painter = imageVector, tint = tint,
+            modifier = Modifier
+                .background(background, shape = CircleShape)
+                .size(25.dp),
+            contentDescription = "checkbox")
     }
 }
 

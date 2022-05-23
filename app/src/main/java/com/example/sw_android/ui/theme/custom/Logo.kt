@@ -47,7 +47,7 @@ fun Logo(
                         bottomEnd = roundDp
                     )
                 )
-                .background(Color(0xFF142B6F))
+                .background(Color.Black)
         ) {
             Image(
                 imageVector = Icons.Filled.Done,
