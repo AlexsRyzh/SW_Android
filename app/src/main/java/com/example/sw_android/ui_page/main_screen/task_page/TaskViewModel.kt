@@ -31,9 +31,12 @@ class TaskViewModel(
     }
 
     fun refreshData() {
-        auth!!.uid?.let {
-            db.collection("WorkField").document(it).get().addOnSuccessListener { snapshot ->
-
+        auth?.uid?.let {
+            db.collection("WorkField").document(it).addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 if (snapshot != null && snapshot.exists()) {
                     var TaskFields = snapshot.toObject<TaskFields>()
                     state = state.copy(
@@ -41,14 +44,20 @@ class TaskViewModel(
                     )
                 }
             }
-            db.collection("Task").whereEqualTo("userUid",auth.uid).get().addOnSuccessListener{ documents ->
+            db.collection("Task").whereEqualTo("userUid",auth.uid).addSnapshotListener(){ documents, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 if (documents != null) {
                     var task1 = mutableListOf<TaskDB>()
                     for (document in documents){
-                        task1!!.add(document.toObject<TaskDB>().copy(TaskUid = document.id))
+                        Log.d("fdsdf","document ${document.data}")
+                        task1.add(document.toObject<TaskDB>().copy(TaskUid = document.id))
+                        Log.d("fdsdf","document -----------------------------------------------------------------------------")
                     }
                     state = state.copy(
-                        tasks = task1
+                        tasks = task1.filter { true } as MutableList<TaskDB>
                     )
                 }
             }
@@ -59,9 +68,6 @@ class TaskViewModel(
     }
 
     fun deletTaskField(nameField: String){
-        auth.uid?.let {
-            db.collection("WorkField").document(it).set(TaskFields(state.taskFields.filter { it!= nameField }))
-        }
         val delTask = mutableListOf<String>()
         db.collection("Task").whereEqualTo("userUid",auth.uid).whereEqualTo("taskField",nameField).get().addOnSuccessListener {
             for (document in it){
@@ -70,6 +76,12 @@ class TaskViewModel(
             for (task in delTask){
                 db.collection("Task").document(task).delete()
             }
+        }
+        state = state.copy(
+            tasks = mutableListOf()
+        )
+        auth.uid?.let {
+            db.collection("WorkField").document(it).set(TaskFields(state.taskFields.filter { it!= nameField }))
         }
         refreshData()
     }
