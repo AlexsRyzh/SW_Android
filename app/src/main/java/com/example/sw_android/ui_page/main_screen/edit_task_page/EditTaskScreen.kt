@@ -1,4 +1,4 @@
-package com.example.sw_android.ui_page.main_screen.add_new_task_page
+package com.example.sw_android.ui_page.main_screen.edit_task_page
 
 import android.app.DatePickerDialog
 import android.os.Build
@@ -39,9 +39,9 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddNewTaskScreen(
+fun EditeTaskScreen(
     navController: NavController,
-    addNewTaskViewModel: AddNewTaskViewModel
+    editeTaskViewModel: EditeTaskViewModel
 ) {
     val mContext = LocalContext.current
 
@@ -58,7 +58,7 @@ fun AddNewTaskScreen(
     val mDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            addNewTaskViewModel.changeDate(
+            editeTaskViewModel.changeDate(
                 day = mDayOfMonth,
                 month = mMonth,
                 year = mYear
@@ -92,9 +92,9 @@ fun AddNewTaskScreen(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
-                    items(addNewTaskViewModel.state.taskFields) {
+                    items(editeTaskViewModel.state.taskFields) {
                         TextButton(onClick = {
-                            addNewTaskViewModel.chageSelected(it.taskFieldName)
+                            editeTaskViewModel.chageSelected(it.taskFieldName)
                         }) {
                             Spacer(modifier = Modifier.height(5.dp))
                             Row(
@@ -126,8 +126,8 @@ fun AddNewTaskScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                Header(navController = navController, addNewTaskViewModel = addNewTaskViewModel)
-                Content(state, Modifier.weight(1f), addNewTaskViewModel = addNewTaskViewModel)
+                Header(navController = navController, editeTaskViewModel = editeTaskViewModel)
+                Content(state, Modifier.weight(1f), editeTaskViewModel = editeTaskViewModel)
                 BottomBar(mDatePickerDialog = mDatePickerDialog)
             }
         }
@@ -170,7 +170,7 @@ private fun BottomBar(
 private fun Content(
     state: ModalBottomSheetState,
     modifier: Modifier = Modifier,
-    addNewTaskViewModel: AddNewTaskViewModel
+    editeTaskViewModel: EditeTaskViewModel
 ) {
     val scope = rememberCoroutineScope()
     Column(
@@ -197,7 +197,7 @@ private fun Content(
                     color = Color.Black
                 )
 
-                addNewTaskViewModel.state.taskFields.find(predicate = { it.select == true })?.taskFieldName?.let {
+                editeTaskViewModel.state.taskFields.find(predicate = { it.select == true })?.taskFieldName?.let {
                     Text(
                         text = it,
                         color = Color(0xffE52900)
@@ -210,7 +210,7 @@ private fun Content(
         Box(
             contentAlignment = Alignment.TopStart
         ) {
-            if (addNewTaskViewModel.state.task.title == "") {
+            if (editeTaskViewModel.state.task.title == "") {
                 Text(
                     text = "Название",
                     fontSize = 20.sp
@@ -218,8 +218,8 @@ private fun Content(
             }
             Column() {
                 BasicTextField(
-                    value = addNewTaskViewModel.state.task.title!!,
-                    onValueChange = { addNewTaskViewModel.changeTasktitle(it) },
+                    value = editeTaskViewModel.state.task.title!!,
+                    onValueChange = { editeTaskViewModel.changeTasktitle(it) },
                     textStyle = TextStyle(
                         fontSize = 20.sp
                     ),
@@ -240,7 +240,7 @@ private fun Content(
         Box(
             contentAlignment = Alignment.TopStart
         ) {
-            if (addNewTaskViewModel.state.task.description == "") {
+            if (editeTaskViewModel.state.task.description == "") {
                 Text(
                     text = "Описание",
                     fontSize = 16.sp
@@ -248,8 +248,8 @@ private fun Content(
             }
             Column() {
                 BasicTextField(
-                    value = addNewTaskViewModel.state.task.description!!,
-                    onValueChange = { addNewTaskViewModel.changeTaskDescrip(it) },
+                    value = editeTaskViewModel.state.task.description!!,
+                    onValueChange = { editeTaskViewModel.changeTaskDescrip(it) },
                     textStyle = TextStyle(
                         fontSize = 16.sp
                     ),
@@ -277,7 +277,7 @@ private fun Content(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = addNewTaskViewModel.currentDate,
+                    text = editeTaskViewModel.currentDate,
                     fontSize = 16.sp
                 )
             }
@@ -290,7 +290,7 @@ private fun Content(
 @Composable
 private fun Header(
     navController: NavController,
-    addNewTaskViewModel: AddNewTaskViewModel
+    editeTaskViewModel: EditeTaskViewModel
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -321,7 +321,7 @@ private fun Header(
         TextButton(
             modifier = Modifier.size(60.dp),
             onClick = {
-                addNewTaskViewModel.saveTask()
+                editeTaskViewModel.saveTask()
                 navController.navigateUp()
             },
             colors = ButtonDefaults.buttonColors(

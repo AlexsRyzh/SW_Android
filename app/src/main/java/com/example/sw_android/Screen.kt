@@ -14,6 +14,8 @@ sealed class Screen(val route: String){
     object AnaliticScreen: Screen(route = "analitic_screen")
     object MenuScreen: Screen(route = "menu_screen")
     object AddNewTaskScreen: Screen(route = "add_new_task_screen")
+    object EditTaskScreen: Screen(route = "edit_task_screen")
+
 }
 
 sealed class NavGraph(val route: String){

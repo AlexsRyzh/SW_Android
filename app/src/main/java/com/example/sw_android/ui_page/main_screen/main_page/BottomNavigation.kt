@@ -136,7 +136,6 @@ fun BottomNavigationGraph(
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            launchSingleTop = true
                             restoreState = true
                         }
 
@@ -145,7 +144,6 @@ fun BottomNavigationGraph(
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            launchSingleTop = true
                             restoreState = true
                         }
                     }

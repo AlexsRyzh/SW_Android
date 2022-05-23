@@ -1,4 +1,4 @@
-package com.example.sw_android.ui_page.main_screen.add_new_task_page
+package com.example.sw_android.ui_page.main_screen.edit_task_page
 
 import android.content.ContentValues
 import android.util.Log
@@ -13,8 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-data class addNewTaskUiState(
-    var taskFields: MutableList<addNewTaskField> = mutableListOf(),
+data class EdiTaskUiState(
+    var taskFields: MutableList<EditTaskField> = mutableListOf(),
     var selectedTaskField: String? = null,
     var task: TaskDB = TaskDB(
         title = "",
@@ -25,49 +25,56 @@ data class addNewTaskUiState(
     )
 )
 
-data class addNewTaskField(
+data class EditTaskField(
     var select: Boolean = false,
     var taskFieldName: String = ""
 )
 
-class AddNewTaskViewModel(
-    private val auth: FirebaseAuth
+class EditeTaskViewModel(
+    private val auth: FirebaseAuth,
+    private val taskUid: String
 ): ViewModel(){
 
-    var state by mutableStateOf(addNewTaskUiState())
+    var state by mutableStateOf(EdiTaskUiState())
     var currentDate by mutableStateOf("--/--/----")
     private var db = Firebase.firestore
-    var isLoading = false
 
     init {
         refreshTaskField()
     }
 
-    private fun refreshTaskField(){
+    private fun refreshTaskField() {
         auth.uid?.let {
             db.collection("WorkField").document(it).get().addOnSuccessListener { snapshot ->
                 Log.d(ContentValues.TAG, "Current data1: ${snapshot.data}")
-                var taskFiel2 = mutableListOf<addNewTaskField>()
+                var taskFiel2 = mutableListOf<EditTaskField>()
                 snapshot.toObject<TaskFields>()?.taskFields?.forEach { name ->
-                    taskFiel2.add(addNewTaskField(false,name))
+                    taskFiel2.add(EditTaskField(false, name))
                 }
-                if (taskFiel2.size>0) {
-                    taskFiel2[0].select=true
+                if (taskFiel2.size > 0) {
+                    taskFiel2[0].select = true
                 }
                 state = state.copy(
-                    taskFields = taskFiel2.filter { true } as MutableList<addNewTaskField>,
+                    taskFields = taskFiel2.filter { true } as MutableList<EditTaskField>,
                 )
-                var selectedTaskField = state.taskFields.find({it.select == true})?.let { it.taskFieldName }
+                var selectedTaskField =
+                    state.taskFields.find({ it.select == true })?.let { it.taskFieldName }
                 state = state.copy(
                     selectedTaskField = selectedTaskField
                 )
             }
         }
-        if (!isLoading){
-            isLoading = true
+        db.collection("Task").document(taskUid).get().addOnSuccessListener {
+            if (it != null) {
+                val taskDb2 = it.toObject<TaskDB>()
+                state = state.copy(
+                    task = taskDb2!!
+                )
+            }
+            Log.d("fdfd", "nonoCurrent ${state.task}")
+            currentDate()
+
         }
-
-
     }
 
     fun saveTask(){
@@ -81,7 +88,7 @@ class AddNewTaskViewModel(
                 month = state.task.month,
                 year = state.task.year
             )
-            db.collection("Task").add(taskDB)
+            db.collection("Task").document(taskUid).set(taskDB)
 
         }
 
@@ -90,7 +97,7 @@ class AddNewTaskViewModel(
     fun chageSelected(
         selectedNew: String
     ){
-        var taskField2 = mutableListOf<addNewTaskField>()
+        var taskField2 = mutableListOf<EditTaskField>()
         state.taskFields.forEach{
             if (it.taskFieldName == selectedNew){
                 taskField2.add(it.copy(select = true))

@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.sw_android.model.TaskDB
 import com.example.sw_android.model.TaskFields
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -14,15 +15,7 @@ import com.google.firebase.ktx.Firebase
 
 data class UiStateTaskScreen(
     var taskFields: MutableList<String> = mutableListOf(),
-    var tasks: MutableMap<String, MutableList<Task>> = mutableMapOf()
-)
-
-data class Task(
-    var title: String,
-    var description:String,
-    var day: Int?,
-    var month: Int?,
-    var year: Int?
+    var tasks: MutableList<TaskDB> = mutableListOf()
 )
 
 class TaskViewModel(
@@ -31,31 +24,37 @@ class TaskViewModel(
 
     var state by mutableStateOf(UiStateTaskScreen())
     private var db = Firebase.firestore
+    var isLoading = false
 
     init {
         refreshData()
     }
 
-    private fun refreshData() {
+    fun refreshData() {
         auth!!.uid?.let {
-            db.collection("WorkField").document(it).addSnapshotListener { snapshot, e ->
-                if (e !== null){
-                Log.w(TAG, "listen:error", e)
-                return@addSnapshotListener
-                }
+            db.collection("WorkField").document(it).get().addOnSuccessListener { snapshot ->
 
                 if (snapshot != null && snapshot.exists()) {
-                    val TaskFields = snapshot.toObject<TaskFields>()
+                    var TaskFields = snapshot.toObject<TaskFields>()
                     state = state.copy(
-                        taskFields = TaskFields!!.taskFields as MutableList<String>
+                        taskFields = TaskFields?.taskFields as MutableList<String>
                     )
                 }
-
-                if (snapshot != null && snapshot.exists()) {
-                } else {
-                    Log.d(TAG, "Current data: null")
+            }
+            db.collection("Task").whereEqualTo("userUid",auth.uid).get().addOnSuccessListener{ documents ->
+                if (documents != null) {
+                    var task1 = mutableListOf<TaskDB>()
+                    for (document in documents){
+                        task1!!.add(document.toObject<TaskDB>().copy(TaskUid = document.id))
+                    }
+                    state = state.copy(
+                        tasks = task1
+                    )
                 }
             }
+        }
+        if (!isLoading){
+            isLoading = true
         }
     }
 
@@ -63,6 +62,16 @@ class TaskViewModel(
         auth.uid?.let {
             db.collection("WorkField").document(it).set(TaskFields(state.taskFields.filter { it!= nameField }))
         }
+        val delTask = mutableListOf<String>()
+        db.collection("Task").whereEqualTo("userUid",auth.uid).whereEqualTo("taskField",nameField).get().addOnSuccessListener {
+            for (document in it){
+                delTask.add(document.id)
+            }
+            for (task in delTask){
+                db.collection("Task").document(task).delete()
+            }
+        }
+        refreshData()
     }
 
     fun setWorkFieldName(
@@ -78,5 +87,13 @@ class TaskViewModel(
         }
         val TaskFields = TaskFields(state.taskFields)
         auth!!.uid?.let { db.collection("WorkField").document(it).set(TaskFields) }
+        refreshData()
+    }
+
+    fun getCurrentDate(
+        month: Int,
+    ): String{
+        val months = listOf("январь", "февраль","март","апрель","май","июнь","июль","август","сентябрь", "октябрь", "ноябрь", "декабрь")
+        return months[month]
     }
 }

@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun MainNavGraph(
     navController: NavHostController,
+    navController2: NavController
 ){
     NavHost(navController = navController, startDestination = Screen.SearchScreen.route){
         composable(
@@ -33,10 +35,13 @@ fun MainNavGraph(
         composable(
             route = Screen.TaskScreen.route
         ){
-            val taskViewModel: TaskViewModel = TaskViewModel(Firebase.auth)
+            val taskViewModel: TaskViewModel = remember {
+                TaskViewModel(Firebase.auth)
+            }
             TaskScreen(
                 navController = navController,
                 taskFieldViewModel = taskViewModel,
+                navController2 = navController2
             )
         }
         composable(

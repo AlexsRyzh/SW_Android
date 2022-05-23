@@ -29,6 +29,7 @@ import androidx.legacy.widget.Space
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.R
+import com.example.sw_android.Screen
 import com.example.sw_android.ui.theme.Black2E2E
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -42,6 +43,7 @@ import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 @Composable
 fun TaskScreen(
     navController: NavController,
+    navController2: NavController,
     taskFieldViewModel: TaskViewModel
 ) {
     var activeAddField by remember {
@@ -94,19 +96,20 @@ fun TaskScreen(
                         else -> {
                             HeaderList(
                                 title = taskFieldViewModel.state.taskFields[page],
-                                numberOf = taskFieldViewModel.state.tasks[taskFieldViewModel.state.taskFields[page]]?.size
-                                    ?: 0,
+                                numberOf = taskFieldViewModel.state.tasks.count { it.taskField == taskFieldViewModel.state.taskFields[page] },
                                 taskFieldViewModel = taskFieldViewModel
                             )
                             LazyColumn() {
                                 items(
-                                    taskFieldViewModel.state.tasks[taskFieldViewModel.state.taskFields[page]]
-                                        ?: listOf()
+                                    taskFieldViewModel.state.tasks.filter { it.taskField == taskFieldViewModel.state.taskFields[page]}
                                 ) {
                                     TaskCard(
-                                        text = it.title,
-                                        day = it.day.toString(),
-                                        month = it.month.toString()
+                                        text = it.title!!,
+                                        day = it.day,
+                                        month = it.month,
+                                        taskViewModel = taskFieldViewModel,
+                                        taskUid = it.TaskUid!!,
+                                        navController = navController2
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
                                 }
@@ -304,8 +307,11 @@ private fun settingIcon() {
 @Composable
 private fun TaskCard(
     text: String,
-    day: String,
-    month: String
+    day: Int?,
+    month: Int?,
+    taskUid: String,
+    taskViewModel: TaskViewModel,
+    navController: NavController
 ) {
     Card(
         elevation = 10.dp,
@@ -314,6 +320,7 @@ private fun TaskCard(
         modifier = Modifier
             .width(300.dp)
             .height(72.dp)
+            .clickable { navController.navigate("${Screen.EditTaskScreen.route}/${taskUid}") }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -328,9 +335,10 @@ private fun TaskCard(
                 overflow = TextOverflow.Clip
             )
             Spacer(modifier = Modifier.height(5.dp))
-            Row() {
-                DateCard(day = day, month = month)
-            }
+            if (day !=null && month!=null)
+                Row() {
+                    DateCard(day = day.toString(), month = taskViewModel.getCurrentDate(month = month))
+                }
         }
     }
 }
