@@ -69,6 +69,7 @@ fun EditeTaskScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
         ModalBottomSheetLayout(
             sheetState = state,
@@ -125,6 +126,7 @@ fun EditeTaskScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Color.White)
             ) {
                 Header(navController = navController, editeTaskViewModel = editeTaskViewModel)
                 Content(state, Modifier.weight(1f), editeTaskViewModel = editeTaskViewModel)
