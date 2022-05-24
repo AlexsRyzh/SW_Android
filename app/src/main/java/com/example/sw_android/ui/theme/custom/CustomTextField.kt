@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -18,6 +19,9 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +33,8 @@ fun CustomTextField(
     clearOnClick: ()->Unit,
     label: String,
     standText: String = "alexsandr.ryzhkov0232@mail.ru",
-    errorMessages: String? = null
+    errorMessages: String? = null,
+    password: Boolean = false
 ){
     Card(
         shape = RoundedCornerShape(18.dp),
@@ -57,6 +62,8 @@ fun CustomTextField(
                 Box(modifier = Modifier ){
                     BasicTextField(
                         value = text,
+                        visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
+                        keyboardOptions = if (password) KeyboardOptions(keyboardType = KeyboardType.Password) else KeyboardOptions.Default,
                         onValueChange = onValueChange,
                         singleLine = true,
                         textStyle = TextStyle(

@@ -85,7 +85,8 @@ fun RegistrationScreen(
                         onValueChange = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(it))},
                         clearOnClick = { UiState.onEvent(RegistrationFormEvent.PasswordChanged(""))},
                         label = "Пароль",
-                        errorMessages = UiState.state.passwordError
+                        errorMessages = UiState.state.passwordError,
+                        password = true
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     CustomTextField(
@@ -93,17 +94,12 @@ fun RegistrationScreen(
                         onValueChange = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged(it))},
                         clearOnClick = { UiState.onEvent(RegistrationFormEvent.RepeatedPasswordChanged("")) },
                         label = "Повторите пароль",
-                        errorMessages = UiState.state.repeatedPasswordError
+                        errorMessages = UiState.state.repeatedPasswordError,
+                        password = true
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     acceptedTermBar(UiState = UiState)
                     Spacer(modifier = Modifier.height(15.dp))
-                    if (UiState.regSuccessful != ""){
-                        Text(
-                            text = UiState.regSuccessful,
-                            color = Color.Red
-                        )
-                    }
                     TextButton(
                         onClick = {
                             UiState.checkState()

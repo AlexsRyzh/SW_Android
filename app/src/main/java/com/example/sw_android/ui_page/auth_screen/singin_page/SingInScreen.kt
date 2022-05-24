@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sw_android.Screen
+import com.example.sw_android.ui.theme.Black2E2E
 import com.example.sw_android.ui.theme.custom.CustomBottomBar
 import com.example.sw_android.ui.theme.custom.CustomTextField
 import com.example.sw_android.ui.theme.custom.Logo
@@ -28,7 +29,7 @@ fun SingInScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .background(Color(0xFF142B6F))
+                .background(Black2E2E)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -73,7 +74,8 @@ fun SingInScreen(
                         text = UiState._uiState.password,
                         onValueChange = {UiState.onEvent(SingInFormEvent.PasswordChanged(it))},
                         clearOnClick = {UiState.onEvent(SingInFormEvent.PasswordChanged(""))},
-                        label = "Пароль"
+                        label = "Пароль",
+                        password = true
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     SaveMeAndForgotPassword(
@@ -91,7 +93,7 @@ fun SingInScreen(
                         },
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xff142B6F),
+                            backgroundColor = Black2E2E,
                             contentColor = Color.White
                         ),
                         contentPadding = PaddingValues(15.dp)

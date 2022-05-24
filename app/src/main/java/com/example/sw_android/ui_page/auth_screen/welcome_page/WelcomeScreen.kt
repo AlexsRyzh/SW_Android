@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sw_android.Screen
+import com.example.sw_android.ui.theme.Black2E2E
 import com.example.sw_android.ui.theme.custom.Logo
 
 @Composable
@@ -30,7 +31,7 @@ fun WelcomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF142B6F))
+            .background(Black2E2E)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -62,10 +63,6 @@ fun WelcomeScreen(
                 action = { navController.navigate(Screen.SingIn.route )}
             )
             Spacer(modifier = Modifier.height(15.dp))
-            CustomBottom(
-                text = "регистрация через email",
-                icon = Icons.Rounded.Email
-            )
         }
     }
 }
@@ -102,7 +99,7 @@ private fun CustomBottom(
             Image(
                 imageVector = icon,
                 contentDescription = "Email",
-                colorFilter = ColorFilter.tint(Color(0xFF142B6F))
+                colorFilter = ColorFilter.tint(Black2E2E)
             )
             Spacer(modifier = Modifier.width(15.dp))
             Text(
